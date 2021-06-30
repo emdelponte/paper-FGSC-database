@@ -1,0 +1,30 @@
+---
+title: ""
+author: ""
+date: ""
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+    css: style.css
+---
+
+
+# About
+
+This is a research compendium that documents and allows to reproduce the analysis from a review article that describes a global database of strains within the *Fusarium graminearum* species complex (FGSC), an important fungal pathogen which causes Fusarium head blight in wheat and small grains.
+
+## Data sources
+
+The database contains records of fungal strains whose information was obtained from two main sources: a)raw data obtained directly from the authors and b) strain-level information obtained/extracted from the literature. For producing the map, only the strains with geocode information, from both sources above, are shown in the map.
+
+## Main outcomes
+
+The data and the analysis performed reported here will be published in a manuscript to be submitted to a scientific journal. After the manuscript is published, the document will be updated as more strains and peer-reviewed articles are included in the database. 
+
+A dashboard interface for consulting the current database is being developed.  [https://emdelponte.github.io/FGSC](https://emdelponte.github.io/FGSC).
+
+
