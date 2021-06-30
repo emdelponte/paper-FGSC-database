@@ -1,0 +1,209 @@
+---
+title: ""
+author: ""
+date: ""
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+      code_folding: hide
+    css: style.css
+editor_options: 
+  chunk_output_type: inline
+---
+
+## Load the libraries
+
+## Data preparation
+
+### Strain level dataset
+
+The data is stored in an Excel file and imported using `readxl` package. To facilitate data entry and organization, there is one sinle `xlsx` file where each sheet stores data at the strain level for each single publication. We will use the `read_excel` function to load each spreadsheet separately and then combine in a single dataframe. 
+
+Let's load the data first. Note: the sheets are called by their position in the dataframe, so it is important to not change their position in the original file.
+
+
+```{r load data, echo=TRUE, message=FALSE, warning=FALSE}
+
+# here we set the locale for not miss the correct spelling of the names
+Sys.setlocale("LC_ALL", 'pt_BR.UTF-8')
+
+# we will use readxl pkg to load the data
+library(readxl)
+s1 <- read_excel("data/fgsc-dat9.xlsx", 1)
+s2 <- read_excel("data/fgsc-dat9.xlsx", 2)
+s3 <- read_excel("data/fgsc-dat9.xlsx", 3)
+s4 <- read_excel("data/fgsc-dat9.xlsx", 4)
+s5 <- read_excel("data/fgsc-dat9.xlsx", 5)
+s6 <- read_excel("data/fgsc-dat9.xlsx", 6)
+s7 <- read_excel("data/fgsc-dat9.xlsx", 7)
+s8 <- read_excel("data/fgsc-dat9.xlsx", 8)
+s9 <- read_excel("data/fgsc-dat9.xlsx", 9)
+s10 <- read_excel("data/fgsc-dat9.xlsx", 10)
+s11 <- read_excel("data/fgsc-dat9.xlsx", 11)
+s12 <- read_excel("data/fgsc-dat9.xlsx", 12)
+s13 <- read_excel("data/fgsc-dat9.xlsx", 13)
+s14 <- read_excel("data/fgsc-dat9.xlsx", 14)
+s15 <- read_excel("data/fgsc-dat9.xlsx", 15)
+s16 <- read_excel("data/fgsc-dat9.xlsx", 16)
+s19 <- read_excel("data/fgsc-dat9.xlsx", 19)
+s20 <- read_excel("data/fgsc-dat9.xlsx", 20)
+s21 <- read_excel("data/fgsc-dat9.xlsx", 21)
+s22 <- read_excel("data/fgsc-dat9.xlsx", 22)
+s23 <- read_excel("data/fgsc-dat9.xlsx", 23)
+s24 <- read_excel("data/fgsc-dat9.xlsx", 24)
+s25 <- read_excel("data/fgsc-dat9.xlsx", 25)
+s26 <- read_excel("data/fgsc-dat9.xlsx", 26)
+s27 <- read_excel("data/fgsc-dat9.xlsx", 27)
+s28 <- read_excel("data/fgsc-dat9.xlsx", 28)
+s29 <- read_excel("data/fgsc-dat9.xlsx", 29)
+s30 <- read_excel("data/fgsc-dat9.xlsx", 30)
+s31 <- read_excel("data/fgsc-dat9.xlsx", 31)
+s32 <- read_excel("data/fgsc-dat9.xlsx", 32)
+s33 <- read_excel("data/fgsc-dat9.xlsx", 33)
+s34 <- read_excel("data/fgsc-dat9.xlsx", 34)
+s35 <- read_excel("data/fgsc-dat9.xlsx", 35)
+s36 <- read_excel("data/fgsc-dat9.xlsx", 36)
+s37 <- read_excel("data/fgsc-dat9.xlsx", 37)
+s38 <- read_excel("data/fgsc-dat9.xlsx", 38)
+s39 <- read_excel("data/fgsc-dat9.xlsx", 39)
+s40 <- read_excel("data/fgsc-dat9.xlsx", 40)
+s41 <- read_excel("data/fgsc-dat9.xlsx", 41)
+s42 <- read_excel("data/fgsc-dat9.xlsx", 42)
+s43 <- read_excel("data/fgsc-dat9.xlsx", 43)
+s44 <- read_excel("data/fgsc-dat9.xlsx", 44)
+s45 <- read_excel("data/fgsc-dat9.xlsx", 45)
+s46 <- read_excel("data/fgsc-dat9.xlsx", 46)
+s47 <- read_excel("data/fgsc-dat9.xlsx", 47)
+s48 <- read_excel("data/fgsc-dat9.xlsx", 48)
+s49 <- read_excel("data/fgsc-dat9.xlsx", 49)
+s50 <- read_excel("data/fgsc-dat9.xlsx", 50)
+s51 <- read_excel("data/fgsc-dat9.xlsx", 51)
+s52 <- read_excel("data/fgsc-dat9.xlsx", 52)
+s53 <- read_excel("data/fgsc-dat9.xlsx", 53)
+s54 <- read_excel("data/fgsc-dat9.xlsx", 54)
+s55 <- read_excel("data/fgsc-dat9.xlsx", 55)
+s56 <- read_excel("data/fgsc-dat9.xlsx", 56)
+s57 <- read_excel("data/fgsc-dat9.xlsx", 57)
+s58 <- read_excel("data/fgsc-dat9.xlsx", 58)
+s59 <- read_excel("data/fgsc-dat9.xlsx", 59)
+s60 <- read_excel("data/fgsc-dat9.xlsx", 60)
+s61 <- read_excel("data/fgsc-dat9.xlsx", 61)
+s62 <- read_excel("data/fgsc-dat9.xlsx", 62)
+s63 <- read_excel("data/fgsc-dat9.xlsx", 63)
+s64 <- read_excel("data/fgsc-dat9.xlsx", 64)
+s65 <- read_excel("data/fgsc-dat9.xlsx", 65)
+s66 <- read_excel("data/fgsc-dat9.xlsx", 66)
+s67 <- read_excel("data/fgsc-dat9.xlsx", 67)
+s68 <- read_excel("data/fgsc-dat9.xlsx", 68)
+s69 <- read_excel("data/fgsc-dat9.xlsx", 69)
+s70 <- read_excel("data/fgsc-dat9.xlsx", 70)
+s71 <- read_excel("data/fgsc-dat9.xlsx", 71)
+s72 <- read_excel("data/fgsc-dat9.xlsx", 72)
+s73 <- read_excel("data/fgsc-dat9.xlsx", 73)
+s74 <- read_excel("data/fgsc-dat9.xlsx", 74)
+s75 <- read_excel("data/fgsc-dat9.xlsx", 75)
+s76 <- read_excel("data/fgsc-dat9.xlsx", 76)
+s77 <- read_excel("data/fgsc-dat9.xlsx", 77)
+s78 <- read_excel("data/fgsc-dat9.xlsx", 78)
+s79 <- read_excel("data/fgsc-dat9.xlsx", 79)
+s80 <- read_excel("data/fgsc-dat9.xlsx", 80)
+s81 <- read_excel("data/fgsc-dat9.xlsx", 81)
+s82 <- read_excel("data/fgsc-dat9.xlsx", 82)
+s83 <- read_excel("data/fgsc-dat9.xlsx", 83)
+s84 <- read_excel("data/fgsc-dat9.xlsx", 84)
+s85 <- read_excel("data/fgsc-dat9.xlsx", 85)
+s86 <- read_excel("data/fgsc-dat9.xlsx", 86)
+s87 <- read_excel("data/fgsc-dat9.xlsx", 87)
+s88 <- read_excel("data/fgsc-dat9.xlsx", 88)
+s89 <- read_excel("data/fgsc-dat9.xlsx", 89)
+s90 <- read_excel("data/fgsc-dat9.xlsx", 90)
+s91 <- read_excel("data/fgsc-dat9.xlsx", 91)
+s92 <- read_excel("data/fgsc-dat9.xlsx", 92)
+s93 <- read_excel("data/fgsc-dat9.xlsx", 93)
+s94 <- read_excel("data/fgsc-dat9.xlsx", 94)
+s95 <- read_excel("data/fgsc-dat9.xlsx", 95)
+s96 <- read_excel("data/fgsc-dat9.xlsx", 96)
+s97 <- read_excel("data/fgsc-dat9.xlsx", 97)
+s98 <- read_excel("data/fgsc-dat9.xlsx", 98)
+```
+
+Let's now combine everything in a single dataframe.
+
+```{r}
+fgsc2 <- rbind(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31, s32, s33, s34, s35, s36, s37, s38, s39, s40, s41, s42, s43, s44, s45, s46, s47, s48, s49, s50, s51, s52, s53, s54, s55, s56, s57, s58, s59, s60, s61, s62, s63, s64, s65, s66, s67, s68, s69, s70, s71, s72, s73, s74, s75, s76, s77, s78, s79, s80, s81, s82, s83, s84, s85, s86, s87, s88, s89, s90, s91, s92, s93, s94, s95, s96, s97, s98)
+```
+
+All strains are georeferenced by lat and long for its exact or approximated location of origin. For many cases, when the exact location was unknown, the centroid of the municipality was used. In the latter case, there will be overlap of the points when mapping. Let's add some random noise in the lat and long of all records using the `jitter` function. This will allow to visualize the individual points, but with the sacrifice of chaning the exact location. For the scale that is being used, this is not a major problem.
+
+Since we do not need all variables, let's make a selection and work with a smaller set. Se use the `select` function of the `dplyr` package. The eleven variables were selected by their position in the dataframe and reorderd.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+fgsc <- fgsc2 %>% select(c(13,2,6,7, 8,9, 10, 14, 19, 20, 21))
+fgsc
+```
+
+
+```{r message=FALSE, warning=FALSE}
+fgsc2 %>% 
+  select(15) %>% 
+  tabyl(`Genotyping method`) %>% 
+  arrange(-n)
+
+fgsc2 %>% 
+  select(11) %>% 
+  tabyl(`Species ID method`) 
+
+fgsc2 %>% 
+  select(17) %>% 
+  tabyl(`Chemotyping method`) %>% 
+  arrange(-n)
+```
+
+In the original dataset, the names of the species are in full spell. We want to use a four-letter code for each species due to space limitations. Let's change them and see the new names in the dataset.
+
+```{r message=FALSE, warning=FALSE}
+library(plyr, dplyr)
+fgsc$FGSC2 <- revalue(fgsc$FGSC,  c("F. graminearum" = "Fgra", "F. meridionale" = "Fmer", "F. mesoamericanum" = "Fmes", "F. cortaderiae" = "Fcor", "F. austroamericanum" = "Faus","F. asiaticum" = "Fasi", "F. louisianense" = "Flou", "F. boothii" = "Fboo", "F. gerlachii" = "Fger", "F. ussurianum" = "Fuss","F. vorosii" = "Fvor", "F. acaciae-mearnsii" = "Faca", "F. boothii X F. graminearum hybrid" = "Fboo x Fgra", "F. brasilicum" = "Fbra","F. aethiopicum" = "Faet"))
+library(janitor)
+fgsc %>% 
+    tabyl(FGSC) %>% 
+  arrange(-n)
+```
+
+Let's do some more transformation by treating year as factor and eliminate from the dataset two species that do not belong to FGSC. 
+
+```{r message=FALSE, warning=FALSE}
+fgsc$Year <- as.numeric(fgsc$Year)
+```
+
+
+We found a few inconsistencies in the spelling of the host names and the genotype names. Let's fix this by renaming the variables directly in the dataframe.
+
+
+```{r message=FALSE, warning=FALSE}
+fgsc$Host <- revalue(fgsc$Host, 
+                     c("oat" = "Oat",  "corn" = "Maize","wheat" = "Wheat", "barley" = "Barley"))
+fgsc$Tri_genotype <- revalue(fgsc$Tri_genotype, c("NX2" = "NX-2"))
+
+library(writexl)
+write_xlsx(fgsc, "data/fgsc-dat-clean.xlsx")
+
+```
+
+### Study level dataset
+
+Finally, we will import data from a second spreadsheet where each row represents a study and the columns are the variables associated with each of them. The file is stored in a google sheet. We will use the `gsheet` package for this task.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+
+articles <- gsheet::gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing')
+
+articles
+```
+
+

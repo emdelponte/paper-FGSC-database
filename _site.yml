@@ -1,0 +1,22 @@
+name: "my-website"
+output_dir: "."
+navbar:
+  title: "FGSC global database"
+  left:
+    - text: "Home"
+      icon: fa fa-home 
+      href: index.html
+    - text: "Datasets"
+      icon: fa fa-table 
+      href: data.html
+    - text: "Bibliographic analysis"
+      icon: fa fa-file-code-o 
+      href: code.html
+    - text: "Strain info analysis"
+      icon: fa fa-file-code-o 
+      href: code2.html
+
+      
+  right:
+    - icon: fa-github-square 
+      href: https://github.com/emdelponte/paper-FHB-Brazil-meta-analysis

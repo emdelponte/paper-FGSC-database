@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>data.utf8</title>
+
+<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FGSC global database</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="data.html">
+    <span class="fa fa fa fa-table"></span>
+     
+    Datasets
+  </a>
+</li>
+<li>
+  <a href="code.html">
+    <span class="fa fa fa fa-file-code-o"></span>
+     
+    Bibliographic analysis
+  </a>
+</li>
+<li>
+  <a href="code2.html">
+    <span class="fa fa fa fa-file-code-o"></span>
+     
+    Strain info analysis
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/emdelponte/paper-FHB-Brazil-meta-analysis">
+    <span class="fa fa-github-square"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="load-the-libraries" class="section level2">
+<h2>Load the libraries</h2>
+</div>
+<div id="data-preparation" class="section level2">
+<h2>Data preparation</h2>
+<div id="strain-level-dataset" class="section level3">
+<h3>Strain level dataset</h3>
+<p>The data is stored in an Excel file and imported using <code>readxl</code> package. To facilitate data entry and organization, there is one sinle <code>xlsx</code> file where each sheet stores data at the strain level for each single publication. We will use the <code>read_excel</code> function to load each spreadsheet separately and then combine in a single dataframe.</p>
+<p>Let’s load the data first. Note: the sheets are called by their position in the dataframe, so it is important to not change their position in the original file.</p>
+<pre class="r"><code># here we set the locale for not miss the correct spelling of the names
+Sys.setlocale(&quot;LC_ALL&quot;, &#39;pt_BR.UTF-8&#39;)</code></pre>
+<pre><code>## [1] &quot;&quot;</code></pre>
+<pre class="r"><code># we will use readxl pkg to load the data
+library(readxl)
+s1 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 1)
+s2 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 2)
+s3 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 3)
+s4 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 4)
+s5 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 5)
+s6 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 6)
+s7 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 7)
+s8 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 8)
+s9 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 9)
+s10 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 10)
+s11 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 11)
+s12 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 12)
+s13 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 13)
+s14 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 14)
+s15 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 15)
+s16 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 16)
+s19 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 19)
+s20 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 20)
+s21 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 21)
+s22 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 22)
+s23 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 23)
+s24 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 24)
+s25 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 25)
+s26 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 26)
+s27 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 27)
+s28 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 28)
+s29 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 29)
+s30 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 30)
+s31 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 31)
+s32 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 32)
+s33 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 33)
+s34 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 34)
+s35 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 35)
+s36 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 36)
+s37 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 37)
+s38 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 38)
+s39 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 39)
+s40 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 40)
+s41 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 41)
+s42 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 42)
+s43 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 43)
+s44 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 44)
+s45 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 45)
+s46 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 46)
+s47 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 47)
+s48 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 48)
+s49 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 49)
+s50 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 50)
+s51 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 51)
+s52 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 52)
+s53 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 53)
+s54 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 54)
+s55 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 55)
+s56 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 56)
+s57 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 57)
+s58 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 58)
+s59 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 59)
+s60 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 60)
+s61 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 61)
+s62 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 62)
+s63 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 63)
+s64 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 64)
+s65 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 65)
+s66 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 66)
+s67 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 67)
+s68 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 68)
+s69 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 69)
+s70 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 70)
+s71 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 71)
+s72 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 72)
+s73 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 73)
+s74 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 74)
+s75 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 75)
+s76 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 76)
+s77 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 77)
+s78 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 78)
+s79 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 79)
+s80 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 80)
+s81 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 81)
+s82 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 82)
+s83 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 83)
+s84 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 84)
+s85 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 85)
+s86 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 86)
+s87 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 87)
+s88 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 88)
+s89 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 89)
+s90 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 90)
+s91 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 91)
+s92 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 92)
+s93 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 93)
+s94 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 94)
+s95 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 95)
+s96 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 96)
+s97 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 97)
+s98 &lt;- read_excel(&quot;data/fgsc-dat9.xlsx&quot;, 98)</code></pre>
+<p>Let’s now combine everything in a single dataframe.</p>
+<pre class="r"><code>fgsc2 &lt;- rbind(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31, s32, s33, s34, s35, s36, s37, s38, s39, s40, s41, s42, s43, s44, s45, s46, s47, s48, s49, s50, s51, s52, s53, s54, s55, s56, s57, s58, s59, s60, s61, s62, s63, s64, s65, s66, s67, s68, s69, s70, s71, s72, s73, s74, s75, s76, s77, s78, s79, s80, s81, s82, s83, s84, s85, s86, s87, s88, s89, s90, s91, s92, s93, s94, s95, s96, s97, s98)</code></pre>
+<p>All strains are georeferenced by lat and long for its exact or approximated location of origin. For many cases, when the exact location was unknown, the centroid of the municipality was used. In the latter case, there will be overlap of the points when mapping. Let’s add some random noise in the lat and long of all records using the <code>jitter</code> function. This will allow to visualize the individual points, but with the sacrifice of chaning the exact location. For the scale that is being used, this is not a major problem.</p>
+<p>Since we do not need all variables, let’s make a selection and work with a smaller set. Se use the <code>select</code> function of the <code>dplyr</code> package. The eleven variables were selected by their position in the dataframe and reorderd.</p>
+<pre class="r"><code>library(tidyverse)
+fgsc &lt;- fgsc2 %&gt;% select(c(13,2,6,7, 8,9, 10, 14, 19, 20, 21))
+fgsc</code></pre>
+<pre><code>## # A tibble: 16,273 x 11
+##    `Collection cod~ Host  Country Year  Latitude Longitude FGSC  TRI_genotype
+##    &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       
+##  1 07Tr001          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+##  2 07Tr002          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+##  3 07Tr003          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+##  4 07Tr004          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+##  5 07Tr005          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+##  6 07Tr006          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+##  7 07Tr007          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+##  8 07Tr008          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+##  9 07Tr009          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+## 10 07Tr010          Wheat Brazil  2007     -28.0     -53.4 F. g~ 15-ADON     
+## # ... with 16,263 more rows, and 3 more variables: Pub1 &lt;chr&gt;, Pub2 &lt;chr&gt;,
+## #   Pub3 &lt;chr&gt;</code></pre>
+<pre class="r"><code>fgsc2 %&gt;% 
+  select(15) %&gt;% 
+  tabyl(`Genotyping method`) %&gt;% 
+  arrange(-n)</code></pre>
+<pre><code>##              Genotyping method    n      percent valid_percent
+##                           MLGT 8919 5.480858e-01  5.892963e-01
+##                   MLGT-Luminex 2113 1.298470e-01  1.396102e-01
+##                     TRI3/TRI12 1552 9.537270e-02  1.025438e-01
+##                           &lt;NA&gt; 1138 6.993179e-02            NA
+##                      TRI3/TRI7  510 3.134026e-02  3.369673e-02
+##                          TRI13  369 2.267560e-02  2.438057e-02
+##       TRI5-TRI6/TRI7/TRI3/TRI8  299 1.837399e-02  1.975553e-02
+##                 TRI3/TRI5/TRI7  254 1.560868e-02  1.678229e-02
+##           TRI3/TRI5/TRI7/TRI13  200 1.229030e-02  1.321440e-02
+##                          TRI12  194 1.192159e-02  1.281797e-02
+##                TRI3/TRI7/TRI13  165 1.013949e-02  1.090188e-02
+##       TRI13/TRI303/TRI315/ToxP  111 6.821115e-03  7.333994e-03
+##                     TRI3/TRI11   98 6.022245e-03  6.475058e-03
+##           TRI3/TRI12/TRI1-ApoI   88 5.407731e-03  5.814338e-03
+##                           TRI3   57 3.502735e-03  3.766105e-03
+##       TRI5-TRI6/TRI3/TRI7/TRI8   53 3.256929e-03  3.501817e-03
+##                     TRI3/TRI13   37 2.273705e-03  2.444665e-03
+##                           RFLP   31 1.904996e-03  2.048233e-03
+##               TRI3/TRI12/TRI13   30 1.843545e-03  1.982161e-03
+##           TRI1/TRI3/TRI8/TRI12   20 1.229030e-03  1.321440e-03
+##  TRI1/TRI3/TRI8/TRI12/PCR-RFLP   20 1.229030e-03  1.321440e-03
+##                    TRI12/TRI13   13 7.988693e-04  8.589362e-04
+##            TRI3/TRI7/TRI13/PKS    1 6.145148e-05  6.607202e-05
+##          TRI3/TRI7/TRI13/TRI13    1 6.145148e-05  6.607202e-05</code></pre>
+<pre class="r"><code>fgsc2 %&gt;% 
+  select(11) %&gt;% 
+  tabyl(`Species ID method`) </code></pre>
+<pre><code>##                    Species ID method    n      percent valid_percent
+##                                 AFLP  327 2.009464e-02  2.022138e-02
+##                                EF-1a  910 5.592085e-02  5.627358e-02
+##                         EF-1a/CYP51C    7 4.301604e-04  4.328737e-04
+##                           EF-1a/ISSR   40 2.458059e-03  2.473564e-03
+##                EF-1a/MAT1-1-3/TRI101  133 8.173047e-03  8.224600e-03
+##                       EF-1a/PCR-RFLP    5 3.072574e-04  3.091955e-04
+##                            EF-1a/PHO   32 1.966447e-03  1.978851e-03
+##                     EF-1a/RED/TRI101   25 1.536287e-03  1.545977e-03
+##                      EF-1a/RPB1/RPB2    2 1.229030e-04  1.236782e-04
+##                           EF-1a/RPB2   25 1.536287e-03  1.545977e-03
+##                         EF-1a/TRI101   23 1.413384e-03  1.422299e-03
+##           EF-1a/TRI101/MAT1-1-3/RPB2    6 3.687089e-04  3.710346e-04
+##                     EF-1a/TRI101/RED   20 1.229030e-03  1.236782e-03
+##                           EF-1a/TRI5   98 6.022245e-03  6.060231e-03
+##                     EF-1a/TRI5/TRI14    8 4.916119e-04  4.947128e-04
+##                            EF-1a/TUB   78 4.793216e-03  4.823449e-03
+##  EF-1a; ß-tubulin; histone 3; TRI101   83 5.100473e-03  5.132645e-03
+##                                 Fg16 1398 8.590917e-02  8.645105e-02
+##                            Fg16/AFLP  293 1.800528e-02  1.811885e-02
+##                           Fg16/EF-1a   78 4.793216e-03  4.823449e-03
+##                        Fg16/MAT1-1-3   29 1.782093e-03  1.793334e-03
+##                      Fg16/RED/TRI101    4 2.458059e-04  2.473564e-04
+##                  Fg16/RFLP/RED/EF-1a   18 1.106127e-03  1.113104e-03
+##           Fg16/TRI101/RED/histone H3   30 1.843545e-03  1.855173e-03
+##                Fg16/UBC85/Histone H3   33 2.027899e-03  2.040690e-03
+##                      genome sequence    1 6.145148e-05  6.183909e-05
+##                                 ISSR   39 2.396608e-03  2.411725e-03
+##            MAT1-1-3/EF-1a/TRI101/TUB   13 7.988693e-04  8.039082e-04
+##                                 MLGT 8831 5.426781e-01  5.461010e-01
+##                         MLGT-Luminex 2115 1.299699e-01  1.307897e-01
+##                           MLGT/EF-1a    1 6.145148e-05  6.183909e-05
+##                  MLGT/ITS/EF-1a/RPB2  137 8.418853e-03  8.471956e-03
+##                                 MLST   38 2.335156e-03  2.349886e-03
+##                   morphological/AFLP  127 7.804338e-03  7.853565e-03
+##                                  PHO   28 1.720642e-03  1.731495e-03
+##                          PHO/RED/URA   29 1.782093e-03  1.793334e-03
+##                        RAPD/IGS-RFLP   19 1.167578e-03  1.174943e-03
+##                    RED/RAPD/IGS-RFLP   11 6.759663e-04  6.802300e-04
+##                           RED/TRI101    6 3.687089e-04  3.710346e-04
+##                                 RFLP  870 5.346279e-02  5.380001e-02
+##                            RPB1/RPB2   48 2.949671e-03  2.968277e-03
+##                               TRI101   83 5.100473e-03  5.132645e-03
+##                       TRI3/TRI12/TEF   70 4.301604e-03  4.328737e-03
+##                                 &lt;NA&gt;  102 6.268051e-03            NA</code></pre>
+<pre class="r"><code>fgsc2 %&gt;% 
+  select(17) %&gt;% 
+  tabyl(`Chemotyping method`) %&gt;% 
+  arrange(-n)</code></pre>
+<pre><code>##  Chemotyping method     n      percent valid_percent
+##                &lt;NA&gt; 14987 0.9209733915            NA
+##                HPLC   379 0.0232901125   0.294712286
+##                  NA   184 0.0113070731   0.143079316
+##               GC-MS   179 0.0109998156   0.139191291
+##            LC-MS/MS   155 0.0095249800   0.120528771
+##                 TLC   103 0.0063295029   0.080093313
+##          HPLC-MS/MS    60 0.0036870890   0.046656299
+##          UPLC-MS/MS    48 0.0029496712   0.037325039
+##          HPLC/GC-MS    33 0.0020278990   0.025660964
+##          GC-MS/HPLC    30 0.0018435445   0.023328149
+##          HPLC/LC-MS    28 0.0017206416   0.021772939
+##               GC/MS    24 0.0014748356   0.018662519
+##         UHPLC-MS/MS    19 0.0011675782   0.014774495
+##               ELISA    18 0.0011061267   0.013996890
+##       GC-MS/HPLC-MS    15 0.0009217723   0.011664075
+##          UPLC/LC-MS     6 0.0003687089   0.004665630
+##               LC-MS     5 0.0003072574   0.003888025</code></pre>
+<p>In the original dataset, the names of the species are in full spell. We want to use a four-letter code for each species due to space limitations. Let’s change them and see the new names in the dataset.</p>
+<pre class="r"><code>library(plyr, dplyr)
+fgsc$FGSC2 &lt;- revalue(fgsc$FGSC,  c(&quot;F. graminearum&quot; = &quot;Fgra&quot;, &quot;F. meridionale&quot; = &quot;Fmer&quot;, &quot;F. mesoamericanum&quot; = &quot;Fmes&quot;, &quot;F. cortaderiae&quot; = &quot;Fcor&quot;, &quot;F. austroamericanum&quot; = &quot;Faus&quot;,&quot;F. asiaticum&quot; = &quot;Fasi&quot;, &quot;F. louisianense&quot; = &quot;Flou&quot;, &quot;F. boothii&quot; = &quot;Fboo&quot;, &quot;F. gerlachii&quot; = &quot;Fger&quot;, &quot;F. ussurianum&quot; = &quot;Fuss&quot;,&quot;F. vorosii&quot; = &quot;Fvor&quot;, &quot;F. acaciae-mearnsii&quot; = &quot;Faca&quot;, &quot;F. boothii X F. graminearum hybrid&quot; = &quot;Fboo x Fgra&quot;, &quot;F. brasilicum&quot; = &quot;Fbra&quot;,&quot;F. aethiopicum&quot; = &quot;Faet&quot;))
+library(janitor)
+fgsc %&gt;% 
+    tabyl(FGSC) %&gt;% 
+  arrange(-n)</code></pre>
+<pre><code>##                                FGSC     n      percent
+##                      F. graminearum 11760 7.226695e-01
+##                        F. asiaticum  3052 1.875499e-01
+##                      F. meridionale   816 5.014441e-02
+##                          F. boothii   279 1.714496e-02
+##                      F. cortaderiae   201 1.235175e-02
+##                 F. austroamericanum    50 3.072574e-03
+##                        F. nepalense    41 2.519511e-03
+##                      F. aethiopicum    22 1.351933e-03
+##                          F. vorosii    16 9.832237e-04
+##                       F. ussurianum    12 7.374178e-04
+##                 F. acaciae-mearnsii    10 6.145148e-04
+##                       F. brasilicum     5 3.072574e-04
+##  F. boothii X F. graminearum hybrid     3 1.843545e-04
+##                        F. gerlachii     3 1.843545e-04
+##                     F. louisianense     2 1.229030e-04
+##                   F. mesoamericanum     1 6.145148e-05</code></pre>
+<p>Let’s do some more transformation by treating year as factor and eliminate from the dataset two species that do not belong to FGSC.</p>
+<pre class="r"><code>fgsc$Year &lt;- as.numeric(fgsc$Year)</code></pre>
+<p>We found a few inconsistencies in the spelling of the host names and the genotype names. Let’s fix this by renaming the variables directly in the dataframe.</p>
+<pre class="r"><code>fgsc$Host &lt;- revalue(fgsc$Host, 
+                     c(&quot;oat&quot; = &quot;Oat&quot;,  &quot;corn&quot; = &quot;Maize&quot;,&quot;wheat&quot; = &quot;Wheat&quot;, &quot;barley&quot; = &quot;Barley&quot;))
+fgsc$Tri_genotype &lt;- revalue(fgsc$Tri_genotype, c(&quot;NX2&quot; = &quot;NX-2&quot;))
+
+library(writexl)
+write_xlsx(fgsc, &quot;data/fgsc-dat-clean.xlsx&quot;)</code></pre>
+</div>
+<div id="study-level-dataset" class="section level3">
+<h3>Study level dataset</h3>
+<p>Finally, we will import data from a second spreadsheet where each row represents a study and the columns are the variables associated with each of them. The file is stored in a google sheet. We will use the <code>gsheet</code> package for this task.</p>
+<pre class="r"><code>articles &lt;- gsheet::gsheet2tbl(&#39;https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing&#39;)
+
+articles</code></pre>
+<pre><code>## # A tibble: 123 x 129
+##    article_ID source citation `author_e-mail` DOI   title `author 1` `author 2`
+##         &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;           &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     
+##  1          1 Author Astolfi~ delponte@ufv.br 10.1~ Gene~ Astolfi P  Reynoso MM
+##  2          2 Author Machado~ delponte@ufv.br 10.1~ Firs~ Machado FJ Möller PA 
+##  3          3 Author Machado~ delponte@ufv.br 10.1~ Diff~ Machado FJ Nicolli CP
+##  4          4 Author Scoz et~ delponte@ufv.br 10.1~ Tric~ Scoz LB    Astolfi P 
+##  5          5 Author Castaña~ stenglein@faa.~ 10.1~ Spec~ Castañare~ Dinolfo M 
+##  6          6 Author Gomes e~ delponte@ufv.br 10.1~ Spec~ Gomes LB   Ward TJ   
+##  7          7 Author Del Pon~ delponte@ufv.br 10.1~ Regi~ Del Ponte~ Spolti P  
+##  8          8 Author Kuhnem ~ delponte@ufv.br 10.1~ Comp~ Kuhnem PR  Ward TJ   
+##  9          9 Author Pan et ~ dpan@fig.edu.uy 10.4~ Popu~ Pan D      Mionetto A
+## 10         10 Author Bec et ~ vaillan@uky.edu 10.1~ Char~ Bec S      Ward TJ   
+## # ... with 113 more rows, and 121 more variables: `author 3` &lt;chr&gt;, `author
+## #   4` &lt;chr&gt;, `author 5` &lt;chr&gt;, `author 6` &lt;chr&gt;, `author 7` &lt;chr&gt;, `author
+## #   8` &lt;chr&gt;, `author 9` &lt;chr&gt;, `author 10` &lt;chr&gt;, `author 11` &lt;chr&gt;, `author
+## #   12` &lt;chr&gt;, `author 13` &lt;chr&gt;, `author 14` &lt;chr&gt;, `author 15` &lt;chr&gt;, `author
+## #   16` &lt;chr&gt;, journal_name &lt;chr&gt;, vol &lt;dbl&gt;, num &lt;chr&gt;, pages &lt;chr&gt;,
+## #   year &lt;dbl&gt;, category_jcr &lt;chr&gt;, IF &lt;dbl&gt;, n_citations &lt;dbl&gt;,
+## #   country_1 &lt;chr&gt;, country_2 &lt;chr&gt;, country_3 &lt;chr&gt;, country_4 &lt;chr&gt;,
+## #   country_5 &lt;chr&gt;, country_6 &lt;chr&gt;, n_isolates &lt;dbl&gt;, Faca &lt;dbl&gt;, Faet &lt;dbl&gt;,
+## #   Fasi &lt;dbl&gt;, Faus &lt;dbl&gt;, Fboo &lt;dbl&gt;, FbooXFgra &lt;dbl&gt;, Fbra &lt;dbl&gt;,
+## #   Fcor &lt;dbl&gt;, Fger &lt;dbl&gt;, Fgra &lt;dbl&gt;, Flou &lt;dbl&gt;, Fmer &lt;dbl&gt;, Fmes &lt;dbl&gt;,
+## #   Fnep &lt;dbl&gt;, Fuss &lt;dbl&gt;, Fvor &lt;dbl&gt;, Faca_NIV &lt;dbl&gt;, Faca_3ADON &lt;dbl&gt;,
+## #   Faet_15ADON &lt;dbl&gt;, Fasi_DON &lt;dbl&gt;, `Fasi_DON/NIV` &lt;dbl&gt;, Fasi_3ADON &lt;dbl&gt;,
+## #   Fasi_15ADON &lt;dbl&gt;, Fasi_N15ADON &lt;dbl&gt;, Fasi_NIV &lt;dbl&gt;,
+## #   `Fasi_4,15-diANIV` &lt;dbl&gt;, `Fasi_NX-2` &lt;dbl&gt;, `Fasi_NX-2/3-ADON` &lt;dbl&gt;,
+## #   Faus_3ADON &lt;dbl&gt;, Faus_15ADON &lt;dbl&gt;, Faus_NIV &lt;dbl&gt;, Fbra_3ADON &lt;dbl&gt;,
+## #   Fbra_NIV &lt;dbl&gt;, Fboo_DON &lt;dbl&gt;, Fboo_3ADON &lt;dbl&gt;, Fboo_15ADON &lt;dbl&gt;,
+## #   FbooXFgra_15ADON &lt;dbl&gt;, `Fcor_DON/NIV` &lt;dbl&gt;, Fcor_3ADON &lt;dbl&gt;,
+## #   Fcor_15ADON &lt;lgl&gt;, Fcor_NIV &lt;dbl&gt;, Fger_NIV &lt;dbl&gt;, Fgra_DON &lt;dbl&gt;,
+## #   `Fgra_DON/NIV` &lt;dbl&gt;, `Fgra_DON/ZEA` &lt;dbl&gt;, Fgra_3ADON &lt;dbl&gt;,
+## #   Fgra_s3ADON &lt;dbl&gt;, Fgra_15ADON &lt;dbl&gt;, `Fgra_15ADON/NX2` &lt;dbl&gt;,
+## #   Fgra_FUSX &lt;lgl&gt;, Fgra_NIV &lt;dbl&gt;, Fgra_NX2 &lt;dbl&gt;, Fgra_ZEA &lt;dbl&gt;,
+## #   Flou_NIV &lt;dbl&gt;, Fmer_DON &lt;dbl&gt;, `Fmer_DON/NIV` &lt;dbl&gt;, Fmer_3ADON &lt;dbl&gt;,
+## #   Fmer_15ADON &lt;dbl&gt;, `Fmer_15ADON/NIV` &lt;dbl&gt;, Fmer_NIV &lt;dbl&gt;, Fmes_NIV &lt;dbl&gt;,
+## #   Fnep_DON &lt;dbl&gt;, Fnep_15ADON &lt;dbl&gt;, Fuss_3ADON &lt;dbl&gt;, Fvor_DON &lt;dbl&gt;,
+## #   Fvor_3ADON &lt;dbl&gt;, Fvor_15ADON &lt;dbl&gt;, Fvor_NIV &lt;dbl&gt;, Fvor_4ANIV &lt;dbl&gt;,
+## #   country_1a &lt;chr&gt;, country_2a &lt;chr&gt;, ...</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

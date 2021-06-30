@@ -1,0 +1,192 @@
+---
+title: ""
+author: ""
+date: ""
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+    css: style.css
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(readxl)
+library(tidyverse)
+library(crosstalk)
+library(plotly)
+library(viridis)
+library(gsheet)
+theme_set(theme_bw())
+```
+
+# Strain info analysis
+
+
+```{r message=FALSE, warning=FALSE}
+fgsc <- read_excel("data/fgsc-dat-clean.xlsx")
+```
+
+
+## Total strain number
+
+```{r}
+fgsc %>% nrow
+```
+
+
+## Strains by species
+
+```{r}
+fgsc %>%
+  select(FGSC) %>%
+  group_by(FGSC) %>%
+  tally(sort = T) %>%
+  ggplot(aes(reorder(FGSC, n), n)) +
+  geom_col(fill = "grey80") +
+  geom_text(aes(label = n), color = "black", size = 3) +
+  labs(x = "", y = "Number of strains", fill = "Number") +
+  scale_fill_viridis() +
+  coord_flip()
+```
+
+
+## Strains by host
+
+```{r}
+fgsc %>%
+  select(Host) %>%
+  group_by(Host) %>%
+  tally(sort = T) %>%
+  filter(Host > 0) %>%
+  ggplot(aes(reorder(Host, n), n)) +
+ geom_col(fill = "gray90") +
+  geom_text(aes(label = n), color = "black", size = 3) +
+  labs(x = "", y = "Number of strains", fill = "Number") +
+  scale_fill_viridis() +
+  coord_flip()
+```
+
+
+
+## Strains by Tri genotype
+
+```{r}
+fgsc %>%
+  select(TRI_genotype) %>%
+  group_by(TRI_genotype) %>%
+  tally(sort = T) %>%
+  filter(
+    TRI_genotype != "N-15-ADON",
+    TRI_genotype != "N-15ADON",
+    TRI_genotype != "15-ADON, NIV",
+    TRI_genotype != "s3-ADON"
+  ) %>% 
+ggplot(aes(reorder(TRI_genotype, n), n)) +
+  geom_col(fill = "grey80") +
+  geom_text(aes(label = n), color = "black", size = 3) +
+  labs(x = "", y = "Number of strains", fill = "Number") +
+  scale_fill_viridis() +
+  coord_flip()
+```
+
+
+## Strains by Country
+
+```{r}
+fgsc %>%
+  select(Country) %>%
+  group_by(Country) %>%
+  tally(sort = T) %>% 
+  filter(Country > 1) %>% 
+ggplot(aes(reorder(Country, n), n)) +
+  geom_col(fill = "grey80") +
+  geom_text(aes(label = n), color = "black", size = 3) +
+  labs(x = "", y = "Number of strains", fill = "Number") +
+  scale_fill_viridis() +
+  coord_flip()
+```
+
+
+
+
+```{r}
+fgsc2 <- fgsc %>%
+  filter(TRI_genotype == "15-ADON" |
+    TRI_genotype == "3-ADON" |
+    TRI_genotype == "NIV") %>%
+  select(Host, Country, TRI_genotype, FGSC2) %>%
+  filter(FGSC2 == "Fgra" |
+    FGSC2 == "Fmer" |
+    FGSC2 == "Fasi" |
+    FGSC2 == "Fcor" |
+    FGSC2 == "Fboo" |
+    FGSC2 == "Faus") %>%
+  filter(Host == "Wheat" |
+    Host == "Rice" |
+    Host == "Barley" |
+    Host == "Maize")
+```
+
+
+
+```{r}
+# http://www.sthda.com/english/wiki/print.php?id=228
+
+library(FactoMineR)
+
+attach(fgsc2)
+data_mca <- data.frame(Host, TRI_genotype, FGSC2)
+head(data_mca)
+cats <- apply(data_mca, 2, function(x) nlevels(as.factor(x))) # enumera as categorias
+cats
+mca1 <- MCA(data_mca, graph = TRUE)
+mca1
+res.mca <- MCA(data_mca, graph = FALSE)
+plot(mca1)
+library("factoextra")
+eig.val <- get_eigenvalue(res.mca)
+head(eig.val)
+fviz_screeplot(res.mca, addlabels = TRUE, ylim = c(0, 45))
+```
+
+```{r}
+
+
+library(ggthemes)
+p <- fviz_mca_var(res.mca,
+  label = "var", repel = T,
+  col.var = "contrib")
+  # Avoid text overlapping (slow if many point))
+
+p + 
+  theme_light()+
+  scale_color_viridis(direction = -1, begin = 0, end = 0.8)
+```
+
+```{r}
+library(reactable)
+reactable(fgsc,
+          bordered = TRUE,
+  highlight = TRUE,
+    defaultColDef = colDef(
+    header = function(value) gsub(".", " ", value, fixed = TRUE),
+    cell = function(value) format(value, nsmall = 1),
+   
+    headerStyle = list(background = "#f7f7f8")
+),
+searchable = TRUE,
+ striped = TRUE
+  )
+```
+
+
+
+
+
+

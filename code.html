@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>code.utf8</title>
+
+<script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FGSC global database</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="data.html">
+    <span class="fa fa fa fa-table"></span>
+     
+    Datasets
+  </a>
+</li>
+<li>
+  <a href="code.html">
+    <span class="fa fa fa fa-file-code-o"></span>
+     
+    Bibliographic analysis
+  </a>
+</li>
+<li>
+  <a href="code2.html">
+    <span class="fa fa fa fa-file-code-o"></span>
+     
+    Strain info analysis
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/emdelponte/paper-FHB-Brazil-meta-analysis">
+    <span class="fa fa-github-square"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p>We collected bibliographic and scientometric data from collection of articles that are the references for the information of the FGSC strains. We will summarize these variables.</p>
+<p>Load the data stored in a <em>Google Sheet</em> format using the <em>gsheet</em> library.</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+Sys.setlocale(&quot;LC_ALL&quot;, &quot;pt_BR.UTF-8&quot;) # set the UTF to read the characters in portuguese</code></pre>
+<pre><code>## [1] &quot;&quot;</code></pre>
+<pre class="r"><code>articles &lt;- gsheet::gsheet2tbl(&#39;https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing&#39;)
+
+library(viridis)
+library(cowplot)
+theme_set(theme_minimal_hgrid())</code></pre>
+<div id="peer-reviewed-articles" class="section level2">
+<h2>Peer-reviewed articles</h2>
+<div id="number-of-studies-per-year" class="section level3">
+<h3>Number of studies per year</h3>
+<pre class="r"><code>library(tidyverse) # load several libraries for data wrangling and plotting
+library(ggthemes)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;ggthemes&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:cowplot&#39;:
+## 
+##     theme_map</code></pre>
+<pre class="r"><code>p1 &lt;- articles %&gt;% 
+  select(year, source) %&gt;% 
+  group_by(year, source) %&gt;% 
+tally() %&gt;% 
+  ggplot(aes(year, n, fill = source))+
+  geom_col()+
+  scale_fill_few()+
+  theme_minimal_hgrid(font_size = 9)+
+  labs(x = &quot;Year of publication&quot;,
+       y = &quot;Number of articles&quot;,
+       fill = &quot;Strain info source&quot;)+
+  theme(legend.position = &quot;top&quot;)</code></pre>
+<p>A total of (n = 123) peer-reviewed articles were published from 2000 to 2021.</p>
+<p>Not all articles contributed data at the strain level and these were summarized in relation to article metrics and a summary data for the strains together with all associated information that could be obtained such as origin, year, species, genotype, etc. These articles were assigned as <code>summary</code> for the strain source category.</p>
+<p>For those articles contributing data, they were classified as <code>author</code> when obtained directly from the authors and <code>article</code> when the source were the tables and supplemental materials from where the strain information was obtained.</p>
+<p>Let’s have a look at the number of articles on each category.</p>
+<pre class="r"><code>articles %&gt;% 
+  nrow()</code></pre>
+<pre><code>## [1] 123</code></pre>
+<pre class="r"><code>articles %&gt;% 
+  select(source) %&gt;% 
+    group_by(source) %&gt;% 
+  tally(sort = T) </code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   source            n
+##   &lt;chr&gt;         &lt;int&gt;
+## 1 Article          56
+## 2 Author           42
+## 3 Not available    25</code></pre>
+<pre class="r"><code>#100/19</code></pre>
+<p>Let’s plot the number of articles per year conditional to the contribution of strain data.</p>
+<pre class="r"><code>library(cowplot)
+articles %&gt;% 
+  ggplot(aes(year, fill = source))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_bar()+
+  scale_fill_viridis_d()+
+  scale_y_continuous(breaks=seq(0, 11, 1), expand=c(0.01, 0))+
+  scale_x_continuous(breaks=seq(2000, 2019))+
+  labs(y = &quot;Number of articles&quot;, x = &quot;Published year&quot;, title = &quot;Articles per year&quot;, fill = &quot;Strain info&quot;)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+</div>
+<div id="journal-metrics" class="section level2">
+<h2>Journal metrics</h2>
+<pre class="r"><code>journal &lt;- articles %&gt;% 
+  select(journal_name) %&gt;% 
+  group_by(journal_name) %&gt;% 
+  tally(sort = T) 
+p2 &lt;- journal %&gt;% 
+  filter(n &gt; 2) %&gt;% 
+  ggplot(aes(reorder(journal_name, n), n))+
+  geom_col(fill = &quot;steelblue&quot;, color = &quot;white&quot;)+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 8)+
+  labs(x = &quot;&quot;, 
+      y = &quot;Number of articles&quot;)
+
+library(patchwork)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;patchwork&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:cowplot&#39;:
+## 
+##     align_plots</code></pre>
+<pre class="r"><code>(p1 | p2)+ plot_annotation(tag_levels = &quot;A&quot;)+
+  plot_layout(widths = c(1, 0.7))+
+  ggsave(&quot;figs/fig1.png&quot;, width = 8, height =3.8)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The articles were published in 40 peer-reviewed journals. The journal with the greatest number of articles was Plant Disease with 14 articles, followed by Plant Pathology (11 articles) and Fungal Genetics and Biology (9 articles). We had only a few journals where the articles did not contribute data at the strain level. Most of the articles contributed data at the strain level obtained from the authors or extracted from the articles.</p>
+<pre class="r"><code>library(cowplot)
+articles %&gt;% 
+  ggplot(aes(reorder(journal_name, journal_name, function(x) length(x)), fill = source))+
+  geom_bar()+
+  theme_minimal_vgrid()+
+  scale_fill_viridis_d()+
+  scale_y_continuous(breaks=seq(0,20), expand=c(0.01, 0))+
+  coord_flip()+
+  labs(y = &quot;Number of articles&quot;, x = &quot;&quot;, title = &quot;Articles per journal&quot;, fill = &quot;Strain info&quot;)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
+</div>
+<div id="authorship-analysis" class="section level2">
+<h2>Authorship analysis</h2>
+<div id="number-of-authors" class="section level3">
+<h3>Number of authors</h3>
+<pre class="r"><code>authors &lt;- articles %&gt;% 
+  gather(author, name, 7:22) %&gt;% 
+  select(author, name) %&gt;% 
+  filter(name != &quot;NA&quot;) %&gt;% 
+  group_by(name) %&gt;% 
+  tally(sort = T) </code></pre>
+<p>There were 498 unique authors in the collection of 123 indexed articles. Let’s see the list of authors and a frequency plot for authors who have published at least four articles.</p>
+<pre class="r"><code>authors</code></pre>
+<pre><code>## # A tibble: 498 x 2
+##    name                n
+##    &lt;chr&gt;           &lt;int&gt;
+##  1 Ward TJ            29
+##  2 O’Donnell K        13
+##  3 Corby Kistler H    12
+##  4 Del Ponte EM       11
+##  5 Waalwijk C          9
+##  6 Xu J                9
+##  7 van der Lee T       8
+##  8 Chulze SN           7
+##  9 Lee T               7
+## 10 Tessmann DJ         7
+## # ... with 488 more rows</code></pre>
+<pre class="r"><code>authors %&gt;% 
+  filter(n &gt; 4) %&gt;% 
+  ggplot(aes(reorder(name, n), n))+
+  geom_col(fill = &quot;steelblue&quot;)+
+  coord_flip()+
+  scale_y_continuous(breaks=seq(0,30,3),  expand=c(0.01, 0))+
+ theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
+  labs(x = &quot;&quot;, y = &quot;Frequency&quot;, title =&quot;Articles per author&quot;)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="title-words-cloud" class="section level3">
+<h3>Title words cloud</h3>
+<pre class="r"><code>library(tidytext)</code></pre>
+<pre><code>## Warning: package &#39;tidytext&#39; was built under R version 4.0.5</code></pre>
+<pre class="r"><code>words &lt;- articles %&gt;% 
+  unnest_tokens(word, title)
+
+stopwords_pt &lt;- read_csv(
+  file = &quot;http://www.labape.com.br/rprimi/ds/stopwords.txt&quot;,
+  col_names = FALSE
+)</code></pre>
+<pre><code>## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   X1 = col_character()
+## )</code></pre>
+<pre class="r"><code>names(stopwords_pt) &lt;- &quot;word&quot;
+
+words2 &lt;- words %&gt;%
+  anti_join(stopwords_pt) %&gt;%
+  anti_join(stop_words) # this is a list of English stopwords from the tidytext pkg</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre><code>## Joining, by = &quot;word&quot;</code></pre>
+<pre class="r"><code>words2 %&gt;%
+    count(word) %&gt;%
+  mutate(word = reorder(word, n))</code></pre>
+<pre><code>## # A tibble: 389 x 2
+##    word       n
+##    &lt;fct&gt;  &lt;int&gt;
+##  1 09         1
+##  2 1          1
+##  3 10         1
+##  4 15         3
+##  5 15adon     1
+##  6 1984       1
+##  7 2          1
+##  8 2008       1
+##  9 2009       2
+## 10 3          1
+## # ... with 379 more rows</code></pre>
+<pre class="r"><code>words_freq &lt;- words2 %&gt;%
+    count(word, sort = TRUE) %&gt;%
+  mutate(word = reorder(word, n))</code></pre>
+<pre class="r"><code>library(wordcloud)</code></pre>
+<pre><code>## Warning: package &#39;wordcloud&#39; was built under R version 4.0.5</code></pre>
+<pre><code>## Loading required package: RColorBrewer</code></pre>
+<pre class="r"><code>library(RColorBrewer)
+set.seed(2)
+png(&quot;figs/titulos.png&quot;, width=12, height=12, units=&quot;in&quot;, res=300)
+words_freq %&gt;%
+  # filter(n &gt; 5) %&gt;%
+  with(wordcloud(word,
+    n,
+    scale = c(8, 0.4),
+    max.words = 1000,
+    min.freq = 1,
+    random.order = FALSE,
+    rot.per = 0.40, colors=brewer.pal(7, &quot;Dark2&quot;)))
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+</div>
+<div id="authorship-cloud" class="section level3">
+<h3>Authorship cloud</h3>
+<p>A wordcloud is an interesting way to visualize the frequency of articles for each author in the group.</p>
+<pre class="r"><code>library(wordcloud)
+set.seed(1)
+png(&quot;figs/FGSC-authors.png&quot;, width=8, height=8, units=&quot;in&quot;, res=300)
+wordcloud(authors$name, authors$n, c(5,.4), 1, random.order = F, colors=brewer.pal(8, &quot;Dark2&quot;))
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+</div>
+<div id="authorsarticle" class="section level3">
+<h3>Authors/article</h3>
+<pre class="r"><code>n_authors &lt;- articles %&gt;% 
+  select(1, 6:14) %&gt;%
+  group_by(article_ID) %&gt;% 
+  gather(name, n, 2:10) %&gt;% 
+  na.omit() %&gt;% 
+  select(article_ID) %&gt;% 
+  group_by(article_ID) %&gt;% 
+  tally(sort=T)
+summary(n_authors$n)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   3.000   6.000   8.000   7.138   9.000   9.000</code></pre>
+<p>The number of authors varied from two to nine in the publications.</p>
+<pre class="r"><code>n_authors %&gt;% 
+  ggplot(aes(n))+
+  geom_histogram()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="country-of-origin-of-authors" class="section level3">
+<h3>Country of origin of authors</h3>
+<p>Countries per article</p>
+<pre class="r"><code>n_countries &lt;- articles %&gt;% 
+  select(1, 31:36) %&gt;%
+  group_by(article_ID) %&gt;% 
+  gather(name, n, 2:7) %&gt;% 
+  na.omit() %&gt;% 
+  select(article_ID) %&gt;% 
+  group_by(article_ID) %&gt;% 
+  tally(sort=T)</code></pre>
+<p>The number of countries collaborating in an article varied from one to six, represented by one paper. Most of the articles involve authors from a same or from two countries.</p>
+<pre class="r"><code>n_countries %&gt;% 
+  ggplot(aes(n))+
+  geom_histogram()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>table(n_countries$n)</code></pre>
+<pre><code>## 
+##  1  2  3  4  6 
+## 62 48 11  1  1</code></pre>
+</div>
+<div id="country-names-and-frequency" class="section level3">
+<h3>Country names and frequency</h3>
+<p>The countries reported in the affiliations of the authors were indexed for each article. We recorded the country name only once regardless of the number of authors from a same country in a same article. There were authors from 37 countries, and the three most unique occurrences were USA, China and Brazil.</p>
+<pre class="r"><code>library(sf)</code></pre>
+<pre><code>## Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1</code></pre>
+<pre class="r"><code>library(maps)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;maps&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:plyr&#39;:
+## 
+##     ozone</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     map</code></pre>
+<pre class="r"><code>library(ggthemes)
+
+world1 &lt;- st_as_sf(map(&#39;world&#39;, plot = FALSE, fill = TRUE))
+
+world2 &lt;- left_join(world1, countries) %&gt;% 
+  filter(n  &gt;0 )</code></pre>
+<pre><code>## Joining, by = &quot;ID&quot;</code></pre>
+<pre class="r"><code>#devtools::install_github(&quot;yutannihilation/ggsflabel&quot;)
+#library(ggsflabel)
+
+ggplot(world2) + 
+  geom_sf(data = world1, fill = NA, size = 0.2, color = &quot;gray&quot;)+
+  geom_sf(data = world2, aes(fill = n), size = 0)+
+  labs(fill = &quot;Number of 
+authors&quot;)+
+ #geom_sf_text_repel(aes(label = ID), size = 3, )+
+ #geom_sf_text_repel(aes(label = n), size = 3, )+
+  
+    theme_minimal()+
+  theme(legend.position = &quot;top&quot;)+
+  scale_fill_viridis_c()</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>ggsave(&quot;figs/map_authors.png&quot;, dpi = 300, width = 6)</code></pre>
+<pre><code>## Saving 6 x 5 in image</code></pre>
+<pre class="r"><code>articles %&gt;% 
+  
+  gather(code, country, 31:36) %&gt;% 
+  filter(country != &quot;NA&quot;) %&gt;% 
+
+  ggplot(aes(reorder(country, country, function(x) length(x))))+
+  geom_bar()+
+  theme_minimal_hgrid()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(breaks=seq(0,50,2), expand=c(0.01, 0))+
+  labs(y = &quot;Number of articles&quot;, x = &quot;&quot;, title = &quot;Country of the authors&quot; )</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+</div>
+<div id="scholarly-collaborative-network" class="section level2">
+<h2>Scholarly collaborative network</h2>
+<p>Here we will analyze the authorship network to detect connections among the authors and research communities. For such, we need to build an edge list, or all pairs of occurrences of two authors in a same publication. Let’s see below the first 10 pairs or authors. The whole list has almost one thousand pairs.</p>
+<pre class="r"><code>library(purrr)
+library(purrrlyr)
+
+authors_net &lt;- articles %&gt;% select (7:20)
+author_list &lt;- flatten(by_row(authors_net, ..f = function(x) flatten_chr(x), .labels = FALSE))
+author_list &lt;- lapply(author_list, function(x) x[!is.na(x)])
+
+# create the edge list
+author_edge_list &lt;- t(do.call(cbind, lapply(author_list[sapply(author_list, length) &gt;= 2], combn, 2)))
+
+author_edge_list[1:10, ]</code></pre>
+<pre><code>##       [,1]         [,2]          
+##  [1,] &quot;Astolfi P&quot;  &quot;Reynoso MM&quot;  
+##  [2,] &quot;Astolfi P&quot;  &quot;Ramirez ML&quot;  
+##  [3,] &quot;Astolfi P&quot;  &quot;Chulze SN&quot;   
+##  [4,] &quot;Astolfi P&quot;  &quot;Alves TCA&quot;   
+##  [5,] &quot;Astolfi P&quot;  &quot;Tessmann DJ&quot; 
+##  [6,] &quot;Astolfi P&quot;  &quot;Del Ponte EM&quot;
+##  [7,] &quot;Reynoso MM&quot; &quot;Ramirez ML&quot;  
+##  [8,] &quot;Reynoso MM&quot; &quot;Chulze SN&quot;   
+##  [9,] &quot;Reynoso MM&quot; &quot;Alves TCA&quot;   
+## [10,] &quot;Reynoso MM&quot; &quot;Tessmann DJ&quot;</code></pre>
+<p>Within an authorship network, co-authors (present in a same article) are linked together. Authors from this articles can be connected to authors from other articles whenever they appear together. Therefore, two articles are linked by a common author. Each author is then considered a <strong>node</strong> in the network and the connections between them are the <strong>edges</strong> or links. There are several statistics to calculate in a network analysis.</p>
+<p>For now, let’s visualize the authorship network and also the community structure which was defined via a function that tries to find densely connected subgraphs, also called communities. We will use a random walk algorithm for determining the communities. The idea is that short random walks tend to stay in the same community. In the network below, there are 15 communities or subgraphs which are represented by the colors.</p>
+<pre class="r"><code># igraph
+library(igraph)
+net=graph.edgelist(as.matrix(author_edge_list), directed=FALSE)
+
+degree &lt;- enframe(degree(net))
+
+
+degree %&gt;% 
+  arrange(-value)</code></pre>
+<pre><code>## # A tibble: 498 x 2
+##    name            value
+##    &lt;chr&gt;           &lt;dbl&gt;
+##  1 Ward TJ           190
+##  2 O’Donnell K        85
+##  3 Corby Kistler H    77
+##  4 Waalwijk C         73
+##  5 Xu J               68
+##  6 van der Lee T      63
+##  7 Del Ponte EM       61
+##  8 Zhang H            53
+##  9 Lee T              53
+## 10 Chen W             47
+## # ... with 488 more rows</code></pre>
+<pre class="r"><code>#summary(degree$degree.net.)
+between &lt;- data.frame(round(betweenness(net), 1))
+page &lt;- data.frame(page_rank(net)$vector)
+close &lt;-data.frame(round(closeness(net), 10))
+eigen &lt;- data.frame(round(evcent(net)$vector, 5))</code></pre>
+<div id="network-graph" class="section level3">
+<h3>Network graph</h3>
+<pre class="r"><code>library(network)
+library(intergraph)
+
+# Clusters
+wc &lt;- cluster_walktrap(net)
+eb &lt;- cluster_edge_betweenness(net)
+lec &lt;- cluster_leading_eigen(net)
+cl &lt;- cluster_label_prop(net)
+
+# Modularity
+mod &lt;- modularity(wc)
+ms &lt;- membership(wc)
+
+net_stat &lt;- asNetwork(net)
+png(&quot;figs/network1.png&quot;, res = 600,  width = 5000 , height = 5000, units=&quot;px&quot;)
+set.seed(11)
+par(mar=c(0,0,0,0))
+plot.network(net_stat, vertex.cex= 0.05 + 0.25*log(graph.strength(net)), label =ifelse(degree(net)&gt;37,V(net)$name,NA), label.bg = &quot;white&quot;, label.col = &quot;black&quot;, edge.col = &quot;lightgray&quot;, edge.lty = 0.5, label.cex = 0.6,  displaylabels = TRUE, vertex.col = membership(wc), jitter = T, edge.len = 0.2, boxed.labels=T, label.border=1, pad=5)
+dev.off()</code></pre>
+<pre><code>## quartz_off_screen 
+##                 2</code></pre>
+</div>
+<div id="country-collaborative-network" class="section level3">
+<h3>Country collaborative network</h3>
+<pre class="r"><code>library(purrr)
+library(purrrlyr)
+
+country_net &lt;- articles %&gt;% select (31:36)
+country_list &lt;- flatten(by_row(country_net, ..f = function(x) flatten_chr(x), .labels = FALSE))
+country_list &lt;- lapply(country_list, function(x) x[!is.na(x)])
+
+# create the edge list
+country_edge_list &lt;- t(do.call(cbind, lapply(country_list[sapply(country_list, length) &gt;= 2], combn, 2)))
+
+country_edge_list[1:10, ]</code></pre>
+<pre><code>##       [,1]        [,2]           
+##  [1,] &quot;Brazil&quot;    &quot;Argentina&quot;    
+##  [2,] &quot;Brazil&quot;    &quot;United States&quot;
+##  [3,] &quot;Brazil&quot;    &quot;United States&quot;
+##  [4,] &quot;Brazil&quot;    &quot;United States&quot;
+##  [5,] &quot;Argentina&quot; &quot;Brazil&quot;       
+##  [6,] &quot;Argentina&quot; &quot;Uruguay&quot;      
+##  [7,] &quot;Brazil&quot;    &quot;Uruguay&quot;      
+##  [8,] &quot;Brazil&quot;    &quot;United States&quot;
+##  [9,] &quot;Brazil&quot;    &quot;United States&quot;
+## [10,] &quot;Brazil&quot;    &quot;United States&quot;</code></pre>
+<pre class="r"><code># igraph
+library(igraph)
+net2 &lt;- graph.edgelist(as.matrix(country_edge_list), directed=FALSE)
+degree &lt;- data.frame(degree(net2))
+#summary(degree$degree.net.)
+between &lt;- data.frame(round(betweenness(net2), 1))
+page &lt;- data.frame(page_rank(net2)$vector)
+close &lt;-data.frame(round(closeness(net2), 10))
+eigen &lt;- data.frame(round(evcent(net2)$vector, 5))</code></pre>
+</div>
+<div id="network-graph-1" class="section level3">
+<h3>Network graph</h3>
+<pre class="r"><code>library(network)
+library(intergraph)
+
+# Clusters
+wc2 &lt;- cluster_walktrap(net2)
+eb2 &lt;- cluster_edge_betweenness(net2)
+lec2 &lt;- cluster_leading_eigen(net2)
+cl2 &lt;- cluster_label_prop(net2)
+
+# Modularity
+mod &lt;- modularity(wc2)
+ms &lt;- membership(wc2)
+
+net_stat2 &lt;- asNetwork(net2)
+png(&quot;figs/network2.png&quot;, res = 600,  width = 4500 , height = 4000, units=&quot;px&quot;)
+set.seed(1003)
+par(mar=c(0,0,0,0))
+plot.network(net_stat2, vertex.cex= 1 + 0.25*log(graph.strength(net2)), label =ifelse(degree(net2)&gt;0, V(net2)$name,NA), label.bg = &quot;NA&quot;, label.col = &quot;black&quot;, edge.col = &quot;gray&quot;, edge.lty = 1, label.cex = 0.7, edge.lwd = 2,   displaylabels = TRUE, vertex.col = membership(wc2), jitter = T, edge.len = 0.2, boxed.labels = T, label.border=&quot;NA&quot;, pad=1)
+dev.off()</code></pre>
+<pre><code>## quartz_off_screen 
+##                 2</code></pre>
+</div>
+<div id="statistics" class="section level3">
+<h3>Statistics</h3>
+<pre class="r"><code>library(broom)
+
+# Transitivity
+trans &lt;- transitivity(net, type = &quot;global&quot;)
+
+# Degree 
+deg &lt;- degree(net)
+deg &lt;- tidy(deg) 
+deg2 &lt;- deg %&gt;% group_by(names) %&gt;% 
+  arrange(desc(x)) %&gt;% head(20)
+
+# Betweenness
+bet &lt;- betweenness(net, normalized = TRUE, directed = FALSE)
+bet &lt;- tidy(bet) 
+bet2 &lt;- bet %&gt;% group_by(names) %&gt;% 
+  arrange(desc(x)) %&gt;%  head(20)
+
+
+# Eigenvector centrality
+eigen &lt;- eigen_centrality(net)
+eigen1 &lt;- tidy(eigen$vector) 
+eigen2 &lt;- eigen1 %&gt;% group_by(names) %&gt;% 
+  arrange(desc(x)) %&gt;%  head(20)
+
+
+# Page rank centrality
+rank &lt;- page.rank(net)
+rank1 &lt;- tidy(rank$vector) 
+rank2 &lt;- rank1 %&gt;% group_by(names) %&gt;% 
+  arrange(desc(x)) %&gt;%  head(20)
+
+# Closeness centrality
+close &lt;- closeness(net)
+close1 &lt;- tidy(close) 
+close2 &lt;- close1 %&gt;% group_by(names) %&gt;% 
+  arrange(desc(x)) %&gt;%  head(20)
+
+# Clusters
+wc &lt;- cluster_walktrap(net)
+
+
+# Modularity
+mod &lt;- modularity(wc)
+ms &lt;- membership(wc)
+
+# clustering edge betweenness
+eb &lt;- cluster_edge_betweenness(net)
+lec &lt;- cluster_leading_eigen(net)</code></pre>
+<div id="network-transitivity" class="section level4">
+<h4>Network transitivity</h4>
+<p>Transitivity, also know as clustering coefficient, is the mean probability that two author with a common author are themselves co-authors. In our study the transitivity was <strong>0.4736311</strong>, which means that, on average, the chance that two scholars that share a common collaborator wrote a paper together is almost one-half.</p>
+</div>
+<div id="node-degree" class="section level4">
+<h4>Node degree</h4>
+<p>Individually, authors can be highly connected or influential. The degree of a node is a basic structural property that quantify the number of adjacent nodes or edges. Let’s see the 25 authors with most degree values.</p>
+<pre class="r"><code>plot(deg2$x, eigen2$x)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="betweenness" class="section level4">
+<h4>Betweenness</h4>
+<pre class="r"><code>head(bet2, 10)</code></pre>
+<pre><code>## # A tibble: 10 x 2
+## # Groups:   names [10]
+##    names             x
+##    &lt;chr&gt;         &lt;dbl&gt;
+##  1 Ward TJ      0.310 
+##  2 Waalwijk C   0.183 
+##  3 Lee T        0.0773
+##  4 Chen W       0.0759
+##  5 Chulze SN    0.0641
+##  6 Del Ponte EM 0.0451
+##  7 Proctor RH   0.0354
+##  8 Zhang H      0.0258
+##  9 Lee Y-W      0.0255
+## 10 Wu X         0.0255</code></pre>
+</div>
+<div id="page-rank" class="section level4">
+<h4>Page rank</h4>
+<pre class="r"><code>head(rank2)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+## # Groups:   names [6]
+##   names                 x
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 Ward TJ         0.0276 
+## 2 O’Donnell K     0.0119 
+## 3 Corby Kistler H 0.0105 
+## 4 Del Ponte EM    0.00882
+## 5 Waalwijk C      0.00847
+## 6 Xu J            0.00739</code></pre>
+</div>
+<div id="eigenvector" class="section level4">
+<h4>Eigenvector</h4>
+<pre class="r"><code>head(eigen2)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+## # Groups:   names [6]
+##   names               x
+##   &lt;chr&gt;           &lt;dbl&gt;
+## 1 Ward TJ         1    
+## 2 O’Donnell K     0.769
+## 3 Corby Kistler H 0.701
+## 4 Aoki T          0.415
+## 5 Gale LR         0.368
+## 6 Geiser DM       0.324</code></pre>
+</div>
+<div id="closeness" class="section level4">
+<h4>Closeness</h4>
+<pre class="r"><code>head(close2)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+## # Groups:   names [6]
+##   names              x
+##   &lt;chr&gt;          &lt;dbl&gt;
+## 1 Ward TJ    0.0000143
+## 2 Waalwijk C 0.0000143
+## 3 Chulze SN  0.0000143
+## 4 Lee T      0.0000143
+## 5 Clear RM   0.0000143
+## 6 Kelly A    0.0000143</code></pre>
+</div>
+</div>
+</div>
+<div id="survey-details" class="section level2">
+<h2>Survey details</h2>
+<div id="number-of-isolates-per-study" class="section level3">
+<h3>Number of isolates per study</h3>
+<pre class="r"><code>articles %&gt;% 
+  ggplot(aes(n_isolates))+
+  geom_histogram()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<pre class="r"><code>sum(articles$n_isolates, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 26644</code></pre>
+<pre class="r"><code>summary(articles$n_isolates)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##     1.0    20.0    62.0   218.4   155.2  4062.0       1</code></pre>
+</div>
+<div id="number-of-strains-per-source" class="section level3">
+<h3>Number of strains per source</h3>
+<pre class="r"><code>articles %&gt;% 
+  dplyr::group_by(source) %&gt;% 
+  summarize(n_strains = sum(n_isolates, na.rm = TRUE)) </code></pre>
+<pre><code>##   n_strains
+## 1     26644</code></pre>
+</div>
+<div id="number-of-strains-per-country" class="section level3">
+<h3>Number of strains per country</h3>
+<pre class="r"><code># number of strains per species
+articles %&gt;% 
+  select(38:53) %&gt;% 
+  gather(species, value) %&gt;% 
+  filter(value != &quot;NA&quot;) %&gt;% 
+  group_by(species) %&gt;% 
+  summarize(n_strains = sum(value),
+    strains = round((sum(value)/sum(articles$n_isolates, na.rm = true))*100,2)) %&gt;% 
+  arrange(-strains) </code></pre>
+<pre><code>##   n_strains strains
+## 1     24384   91.52</code></pre>
+<pre class="r"><code># species by number of studies
+articles %&gt;% 
+  select(38:53) %&gt;% 
+  gather(species, value) %&gt;% 
+  filter(value != &quot;NA&quot;) %&gt;% 
+  tabyl(species) %&gt;% 
+  arrange(-n)</code></pre>
+<pre><code>##    species   n    percent
+##       Fgra 106 0.41406250
+##       Fasi  47 0.18359375
+##       Fmer  36 0.14062500
+##       Fboo  20 0.07812500
+##       Fcor  18 0.07031250
+##       Faus   9 0.03515625
+##       Fbra   4 0.01562500
+##       Faca   3 0.01171875
+##       Fvor   3 0.01171875
+##  FbooXFgra   2 0.00781250
+##       Fnep   2 0.00781250
+##       Fuss   2 0.00781250
+##       Faet   1 0.00390625
+##       Fger   1 0.00390625
+##       Flou   1 0.00390625
+##       Fmes   1 0.00390625</code></pre>
+<pre class="r"><code># species by number of studies
+articles %&gt;% 
+  select(80:90) %&gt;% 
+  gather(fgra, value) %&gt;% 
+  filter(value != &quot;NA&quot;) %&gt;% 
+  tabyl(fgra) %&gt;% 
+  arrange(-n)</code></pre>
+<pre><code>##             fgra  n     percent
+##      Fgra_15ADON 84 0.512195122
+##       Fgra_3ADON 40 0.243902439
+##         Fgra_NIV 22 0.134146341
+##         Fgra_DON  8 0.048780488
+##         Fgra_NX2  4 0.024390244
+##     Fgra_DON/NIV  2 0.012195122
+##  Fgra_15ADON/NX2  1 0.006097561
+##     Fgra_DON/ZEA  1 0.006097561
+##      Fgra_s3ADON  1 0.006097561
+##         Fgra_ZEA  1 0.006097561</code></pre>
+<pre class="r"><code># species by number of studies
+articles %&gt;% 
+  select(80:90) %&gt;% 
+  gather(fgra, value) %&gt;% 
+  filter(value != &quot;NA&quot;) %&gt;% 
+  tabyl(fgra) %&gt;% 
+  arrange(-n)</code></pre>
+<pre><code>##             fgra  n     percent
+##      Fgra_15ADON 84 0.512195122
+##       Fgra_3ADON 40 0.243902439
+##         Fgra_NIV 22 0.134146341
+##         Fgra_DON  8 0.048780488
+##         Fgra_NX2  4 0.024390244
+##     Fgra_DON/NIV  2 0.012195122
+##  Fgra_15ADON/NX2  1 0.006097561
+##     Fgra_DON/ZEA  1 0.006097561
+##      Fgra_s3ADON  1 0.006097561
+##         Fgra_ZEA  1 0.006097561</code></pre>
+<pre class="r"><code># species by number of studies
+articles %&gt;% 
+  select(92:97) %&gt;% 
+  gather(fmer, value) %&gt;% 
+  filter(value != &quot;NA&quot;) %&gt;% 
+  tabyl(fmer) %&gt;% 
+  arrange(-n)</code></pre>
+<pre><code>##             fmer  n    percent
+##         Fmer_NIV 29 0.80555556
+##      Fmer_15ADON  2 0.05555556
+##         Fmer_DON  2 0.05555556
+##  Fmer_15ADON/NIV  1 0.02777778
+##       Fmer_3ADON  1 0.02777778
+##     Fmer_DON/NIV  1 0.02777778</code></pre>
+<pre class="r"><code>articles %&gt;% 
+  select(57:65) %&gt;% 
+  gather(fasi, value) %&gt;% 
+  filter(value != &quot;NA&quot;) %&gt;% 
+  tabyl(fasi) %&gt;% 
+  arrange(-n)</code></pre>
+<pre><code>##              fasi  n    percent
+##          Fasi_NIV 35 0.44303797
+##        Fasi_3ADON 21 0.26582278
+##       Fasi_15ADON 11 0.13924051
+##          Fasi_DON  5 0.06329114
+##      Fasi_N15ADON  3 0.03797468
+##  Fasi_4,15-diANIV  1 0.01265823
+##      Fasi_DON/NIV  1 0.01265823
+##         Fasi_NX-2  1 0.01265823
+##  Fasi_NX-2/3-ADON  1 0.01265823</code></pre>
+<pre class="r"><code>articles %&gt;% 
+  select(115:128) %&gt;% 
+  gather(host, value) %&gt;% 
+  filter(value != &quot;NA&quot;) %&gt;% 
+  tabyl(value) %&gt;% 
+  arrange(-n) %&gt;% 
+  tibble()</code></pre>
+<pre><code>## # A tibble: 45 x 3
+##    value           n percent
+##    &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;
+##  1 Wheat          71 0.348  
+##  2 Maize          33 0.162  
+##  3 Barley         29 0.142  
+##  4 Rice           12 0.0588 
+##  5 Soybean         8 0.0392 
+##  6 Oat             6 0.0294 
+##  7 Durum wheat     3 0.0147 
+##  8 Soil            3 0.0147 
+##  9 Rye             2 0.00980
+## 10 Sugar beet      2 0.00980
+## # ... with 35 more rows</code></pre>
+<pre class="r"><code>fgsc &lt;- readxl::read_excel(&quot;data/fgsc-dat-clean.xlsx&quot;)
+fgsc</code></pre>
+<pre><code>## # A tibble: 16,273 x 12
+##    `Collection cod~ Host  Country  Year Latitude Longitude FGSC  TRI_genotype
+##    &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       
+##  1 07Tr001          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+##  2 07Tr002          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+##  3 07Tr003          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+##  4 07Tr004          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+##  5 07Tr005          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+##  6 07Tr006          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+##  7 07Tr007          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+##  8 07Tr008          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+##  9 07Tr009          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+## 10 07Tr010          Wheat Brazil   2007    -28.0     -53.4 F. g~ 15-ADON     
+## # ... with 16,263 more rows, and 4 more variables: Pub1 &lt;chr&gt;, Pub2 &lt;lgl&gt;,
+## #   Pub3 &lt;lgl&gt;, FGSC2 &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div id="strains-by-species" class="section level2">
+<h2>Strains by species</h2>
+<pre class="r"><code>species &lt;- fgsc %&gt;%
+  
+  select(FGSC, TRI_genotype) %&gt;%
+  filter(TRI_genotype != &quot;NA&quot;) %&gt;% 
+  group_by(FGSC, TRI_genotype) %&gt;%
+  tally(sort = T) %&gt;% 
+  head(6) %&gt;% 
+  ggplot(aes(reorder(FGSC, n), n, fill = TRI_genotype))+
+  geom_col()+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 8)+
+  theme(legend.position = &quot;bottom&quot;)+
+  scale_fill_colorblind()+
+  labs(x = &quot;&quot;, y = &quot;Number of strains&quot;)</code></pre>
+</div>
+<div id="strains-by-host" class="section level2">
+<h2>Strains by host</h2>
+<pre class="r"><code>host &lt;- fgsc %&gt;%
+  select(Host) %&gt;%
+  filter(Host != &quot;unknown&quot;) %&gt;% 
+  group_by(Host) %&gt;%
+  tally(sort = T) %&gt;% 
+  head(6) %&gt;% 
+  ggplot(aes(reorder(Host, n), n))+
+  geom_col(fill = &quot;steelblue&quot;)+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 8)+
+  theme(legend.position = &quot;none&quot;)+
+  labs(x = &quot;&quot;, y = &quot;Number of strains&quot;)</code></pre>
+</div>
+<div id="strains-by-tri-genotype" class="section level2">
+<h2>Strains by Tri genotype</h2>
+<pre class="r"><code>chemotype &lt;- fgsc %&gt;%
+  select(TRI_genotype) %&gt;%
+  filter(TRI_genotype %in% c(&quot;15-ADON&quot;, &quot;3-ADON&quot;, &quot;NIV&quot;)) %&gt;% 
+  group_by(TRI_genotype) %&gt;%
+  tally(sort = T) %&gt;% 
+  ggplot(aes(reorder(TRI_genotype, n), n))+
+  geom_col(fill = &quot;steelblue&quot;)+
+ coord_flip()+
+  scale_fill_brewer(palette = &quot;Set2&quot;)+
+  theme_minimal_hgrid()+
+  theme(legend.position = &quot;none&quot;)+
+  
+  labs(x = &quot;&quot;, y = &quot;Number of strains&quot;)</code></pre>
+</div>
+<div id="strains-by-country" class="section level2">
+<h2>Strains by Country</h2>
+<pre class="r"><code>inset_map &lt;- fgsc %&gt;%
+  select(Country) %&gt;%
+  group_by(Country) %&gt;%
+  tally(sort = T) %&gt;%
+  arrange(-n) %&gt;% 
+  head(10) %&gt;% 
+  ggplot(aes(reorder(Country, n), n/1000))+
+  geom_col(fill = &quot;steelblue&quot;)+
+  theme_minimal_grid(font_size = 8)+
+  coord_flip()+
+  labs(x = &quot;&quot;, y = &quot;Thousand strains&quot;)</code></pre>
+</div>
+<div id="global-maps" class="section level2">
+<h2>global maps</h2>
+<pre class="r"><code>global_map &lt;- ggplot(fgsc) + 
+  geom_sf(data = world1, fill = NA, size = 0.2, color = &quot;gray&quot;)+
+  geom_point(aes(Longitude, Latitude), size = 0.3, alpha = 0.4, 
+             shape = 16,
+             color = &quot;steelblue&quot;)+
+    theme_map()+
+ 
+  theme(legend.position = &quot;right&quot;)+
+  scale_fill_viridis_c()
+ggsave(&quot;figs/map_strains.png&quot;, dpi = 300, width = 8)</code></pre>
+<pre><code>## Saving 8 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 288 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>library(patchwork)
+global_map +
+     inset_element(inset_map, 
+                      left = 0, 
+                      bottom = 0.05, 
+                      right = 0.24, 
+                      top = 0.6)+
+ 
+ plot_annotation(tag_levels = &quot;A&quot;)+
+  ggsave(&quot;figs/map_strains2.png&quot;, dpi = 300, width =9)</code></pre>
+<pre><code>## Saving 9 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 288 rows containing missing values (geom_point).
+
+## Warning: Removed 288 rows containing missing values (geom_point).</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<pre class="r"><code>fgra1 &lt;- ggplot(fgsc %&gt;% filter(
+                         FGSC == &quot;F. graminearum&quot; |
+                         FGSC == &quot;F. boothii&quot; |
+                         FGSC == &quot;F. austroamericanum&quot;))+
+  geom_sf(data = world1, fill = NA, size = 0.2, color = &quot;gray&quot;)+
+  geom_point(aes(Longitude, Latitude, color = FGSC), 
+             size = 0.2, alpha = 1, 
+             shape = 1)+
+    theme_minimal()+
+    scale_color_colorblind()+
+    labs(x = &quot;&quot;, y =&quot;&quot;)+
+  theme(legend.position = c(0.15, 0.3),
+        legend.key.size = unit(1,&quot;line&quot;),
+legend.background = element_rect(fill=&quot;gray98&quot;, 
+                                  size=1, color = &quot;gray98&quot;,
+                                   linetype=&quot;solid&quot;))+
+  guides(color = guide_legend(override.aes = list(size=3, alpha =1)))+
+  
+  ggsave(&quot;figs/map_Fgra1.png&quot;, dpi = 300, width = 9)</code></pre>
+<pre><code>## Saving 9 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 177 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>library(ggthemes)
+
+fgra2 &lt;- ggplot(fgsc %&gt;% filter(FGSC == &quot;F. asiaticum&quot; | 
+                         FGSC ==&quot;F. meridionale&quot; |
+                         FGSC == &quot;F. cortaderiae&quot; ))+
+  geom_sf(data = world1, fill = NA, size = 0.2, color = &quot;gray&quot;)+
+  geom_point(aes(Longitude, Latitude, color = FGSC), size = 0.2, alpha = 1, 
+             shape = 1)+
+    theme_minimal()+
+    scale_color_few()+
+    labs(x = &quot;&quot;, y =&quot;&quot;)+
+  theme(legend.position = c(0.15, 0.3),
+        legend.key.size = unit(1,&quot;line&quot;),
+legend.background = element_rect(fill=&quot;gray98&quot;, 
+                                  size=1, color = &quot;gray98&quot;,
+                                   linetype=&quot;solid&quot;))+
+  guides(color = guide_legend(override.aes = list(size=3, alpha =1)))+
+  
+  ggsave(&quot;figs/map_Fgra2.png&quot;, dpi = 300, width = 9)</code></pre>
+<pre><code>## Saving 9 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 104 rows containing missing values (geom_point).</code></pre>
+<pre class="r"><code>(fgra1 / fgra2)+
+  ggsave(&quot;figs/map_Fgra.png&quot;, dpi = 300, width = 10)</code></pre>
+<pre><code>## Saving 10 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 177 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 104 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 177 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 104 rows containing missing values (geom_point).</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(fgsc %&gt;% filter(TRI_genotype == &quot;15-ADON&quot; | 
+                         TRI_genotype ==&quot;3-ADON&quot; |
+                         TRI_genotype == &quot;NIV&quot; ))+
+  geom_sf(data = world1, fill = NA, size = 0.2, color = &quot;gray&quot;)+
+  geom_point(aes(Longitude, Latitude, color = TRI_genotype), size = 0.2, alpha = 1, 
+             shape = 1)+
+    theme_minimal()+
+      labs(x = &quot;&quot;, y =&quot;&quot;)+
+  scale_color_colorblind()+
+  theme(legend.position = c(0.15, 0.3),
+        legend.key.size = unit(1,&quot;line&quot;),
+legend.background = element_rect(fill=&quot;gray98&quot;, 
+                                  size=1, color = &quot;gray98&quot;,
+                                   linetype=&quot;solid&quot;))+
+  guides(color = guide_legend(override.aes = list(size=3, alpha =1)))+
+  
+  ggsave(&quot;figs/map_tri.png&quot;, dpi = 300, width = 9)</code></pre>
+<pre><code>## Saving 9 x 5 in image</code></pre>
+<pre><code>## Warning: Removed 269 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 269 rows containing missing values (geom_point).</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-45-2.png" width="672" /></p>
+<pre class="r"><code>fgsc2 &lt;- fgsc %&gt;% 
+  filter(TRI_genotype == &quot;15-ADON&quot; |
+         TRI_genotype == &quot;3-ADON&quot; |
+         TRI_genotype == &quot;NIV&quot;) %&gt;% 
+  select(Host, TRI_genotype, FGSC2) %&gt;% 
+  filter(FGSC2 == &quot;Fgra&quot; | 
+           FGSC2 == &quot;Fmer&quot; | 
+           FGSC2 == &quot;Fasi&quot; |
+           FGSC2 == &quot;Fcor&quot; | 
+           FGSC2 == &quot;Fboo&quot; |
+           FGSC2 == &quot;Faus&quot;) %&gt;% 
+  filter(Host == &quot;Wheat&quot; |
+           Host == &quot;Rice&quot; |
+           Host == &quot;Barley&quot;|
+           Host == &quot;Maize&quot; 
+  )</code></pre>
+</div>
+<div id="pca" class="section level2">
+<h2>PCA</h2>
+<pre class="r"><code>library(FactoMineR) 
+
+attach(fgsc2)
+data_mca = data.frame(Host, TRI_genotype, FGSC2)
+head(data_mca)</code></pre>
+<pre><code>##    Host TRI_genotype FGSC2
+## 1 Wheat      15-ADON  Fgra
+## 2 Wheat      15-ADON  Fgra
+## 3 Wheat      15-ADON  Fgra
+## 4 Wheat      15-ADON  Fgra
+## 5 Wheat      15-ADON  Fgra
+## 6 Wheat      15-ADON  Fgra</code></pre>
+<pre class="r"><code>cats&lt;- apply(data_mca, 2, function(x) nlevels(as.factor(x))) #enumera as categorias
+cats</code></pre>
+<pre><code>##         Host TRI_genotype        FGSC2 
+##            4            3            6</code></pre>
+<pre class="r"><code>mca1 &lt;- MCA(data_mca, graph = TRUE)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-47-1.png" width="672" /><img src="code_files/figure-html/unnamed-chunk-47-2.png" width="672" /><img src="code_files/figure-html/unnamed-chunk-47-3.png" width="672" /></p>
+<pre class="r"><code>mca1</code></pre>
+<pre><code>## **Results of the Multiple Correspondence Analysis (MCA)**
+## The analysis was performed on 14393 individuals, described by 3 variables
+## *The results are available in the following objects:
+## 
+##    name              description                       
+## 1  &quot;$eig&quot;            &quot;eigenvalues&quot;                     
+## 2  &quot;$var&quot;            &quot;results for the variables&quot;       
+## 3  &quot;$var$coord&quot;      &quot;coord. of the categories&quot;        
+## 4  &quot;$var$cos2&quot;       &quot;cos2 for the categories&quot;         
+## 5  &quot;$var$contrib&quot;    &quot;contributions of the categories&quot; 
+## 6  &quot;$var$v.test&quot;     &quot;v-test for the categories&quot;       
+## 7  &quot;$ind&quot;            &quot;results for the individuals&quot;     
+## 8  &quot;$ind$coord&quot;      &quot;coord. for the individuals&quot;      
+## 9  &quot;$ind$cos2&quot;       &quot;cos2 for the individuals&quot;        
+## 10 &quot;$ind$contrib&quot;    &quot;contributions of the individuals&quot;
+## 11 &quot;$call&quot;           &quot;intermediate results&quot;            
+## 12 &quot;$call$marge.col&quot; &quot;weights of columns&quot;              
+## 13 &quot;$call$marge.li&quot;  &quot;weights of rows&quot;</code></pre>
+<pre class="r"><code>res.mca = MCA(data_mca, graph=FALSE)
+plot(mca1)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-47-4.png" width="672" /></p>
+<pre class="r"><code>library(&quot;factoextra&quot;)</code></pre>
+<pre><code>## Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
+<pre class="r"><code>eig.val &lt;- get_eigenvalue(res.mca)
+head(eig.val)</code></pre>
+<pre><code>##       eigenvalue variance.percent cumulative.variance.percent
+## Dim.1  0.6796397        20.389191                    20.38919
+## Dim.2  0.5559623        16.678870                    37.06806
+## Dim.3  0.3716780        11.150339                    48.21840
+## Dim.4  0.3553292        10.659876                    58.87828
+## Dim.5  0.3341201        10.023604                    68.90188
+## Dim.6  0.3219566         9.658697                    78.56058</code></pre>
+<pre class="r"><code>fviz_screeplot(res.mca, addlabels = TRUE)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-47-5.png" width="672" /></p>
+<pre class="r"><code>p &lt;- fviz_mca_var(res.mca,  label = &quot;var&quot;, repel = T,
+               col.var = &quot;contrib&quot;,
+                # Avoid text overlapping (slow if many point)
+               ggtheme = theme_minimal())
+
+pca &lt;- p + scale_color_viridis(end = 0.8)+
+  labs(title = &quot;&quot;)+
+  xlim(-3, 3)+
+  ylim(-3,3)
+  ggsave(&quot;figs/pca.png&quot;, width =5, height = 5)</code></pre>
+<pre class="r"><code>p &lt;- pca | (host /species) 
+
+p+
+  plot_layout(widths = c(1, 0.5))+
+  theme_minimal_grid(font_size = 8)</code></pre>
+<p><img src="code_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<pre class="r"><code>ggsave(&quot;figs/fig_combo.png&quot;, width = 8, height =4)</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

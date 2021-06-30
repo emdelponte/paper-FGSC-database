@@ -1,0 +1,965 @@
+---
+title: ""
+author: ""
+date: ""
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+    toc_float:
+      collapsed: no
+      smooth_scroll: yes
+    css: style.css
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+We collected bibliographic and scientometric data from collection of articles that are the references for the information of the FGSC strains. We will summarize these variables.
+
+Load the data stored in a *Google Sheet* format using the *gsheet* library.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
+Sys.setlocale("LC_ALL", "pt_BR.UTF-8") # set the UTF to read the characters in portuguese
+articles <- gsheet::gsheet2tbl('https://docs.google.com/spreadsheets/d/1rAC_U5upuDPHCSLi9kieb4R5tztHVJGW84aQOf6z7Lk/edit?usp=sharing')
+
+library(viridis)
+library(cowplot)
+theme_set(theme_minimal_hgrid())
+
+```
+
+
+## Peer-reviewed articles
+
+### Number of studies per year
+
+```{r}
+library(tidyverse) # load several libraries for data wrangling and plotting
+library(ggthemes)
+p1 <- articles %>% 
+  select(year, source) %>% 
+  group_by(year, source) %>% 
+tally() %>% 
+  ggplot(aes(year, n, fill = source))+
+  geom_col()+
+  scale_fill_few()+
+  theme_minimal_hgrid(font_size = 9)+
+  labs(x = "Year of publication",
+       y = "Number of articles",
+       fill = "Strain info source")+
+  theme(legend.position = "top")
+
+
+```
+
+A total of (n = `r nrow(articles)`) peer-reviewed articles were published from `r min(articles$year)` to `r max(articles$year)`.
+
+Not all articles contributed data at the strain level and these were summarized in relation to article metrics and a summary data for the strains together with all associated information that could be obtained such as origin, year, species, genotype, etc. These articles were assigned as `summary` for the strain source category. 
+
+For those articles contributing data, they were classified as `author` when obtained directly from the authors and `article` when the source were the tables and supplemental materials from where the strain information was obtained. 
+
+Let's have a look at the number of articles on each category.
+
+
+```{r echo=TRUE}
+articles %>% 
+  nrow()
+
+articles %>% 
+  select(source) %>% 
+    group_by(source) %>% 
+  tally(sort = T) 
+#100/19
+```
+
+Let's plot the number of articles per year conditional to the contribution of strain data.
+
+
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+library(cowplot)
+articles %>% 
+  ggplot(aes(year, fill = source))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_bar()+
+  scale_fill_viridis_d()+
+  scale_y_continuous(breaks=seq(0, 11, 1), expand=c(0.01, 0))+
+  scale_x_continuous(breaks=seq(2000, 2019))+
+  labs(y = "Number of articles", x = "Published year", title = "Articles per year", fill = "Strain info")
+  
+```
+
+
+## Journal metrics
+
+```{r}
+journal <- articles %>% 
+  select(journal_name) %>% 
+  group_by(journal_name) %>% 
+  tally(sort = T) 
+p2 <- journal %>% 
+  filter(n > 2) %>% 
+  ggplot(aes(reorder(journal_name, n), n))+
+  geom_col(fill = "steelblue", color = "white")+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 8)+
+  labs(x = "", 
+      y = "Number of articles")
+
+library(patchwork)
+(p1 | p2)+ plot_annotation(tag_levels = "A")+
+  plot_layout(widths = c(1, 0.7))+
+  ggsave("figs/fig1.png", width = 8, height =3.8)
+```
+
+
+
+The articles were published in `r nrow(journal)` peer-reviewed  journals. The journal with the greatest number of articles was `r journal[1,1]` with `r max(journal$n)` articles, followed by `r journal[2,1]` (`r journal[2,2]` articles) and `r journal[3,1]` (`r journal[3,2]` articles). We had only a few journals where the articles did not contribute data at the strain level. Most of the articles contributed data at the strain level obtained from the authors or extracted from the articles.
+
+
+```{r fig.height=8, fig.width=10, message=FALSE, warning=FALSE, paged.print=TRUE}
+library(cowplot)
+articles %>% 
+  ggplot(aes(reorder(journal_name, journal_name, function(x) length(x)), fill = source))+
+  geom_bar()+
+  theme_minimal_vgrid()+
+  scale_fill_viridis_d()+
+  scale_y_continuous(breaks=seq(0,20), expand=c(0.01, 0))+
+  coord_flip()+
+  labs(y = "Number of articles", x = "", title = "Articles per journal", fill = "Strain info")
+
+  
+```
+
+
+
+
+
+
+
+
+
+
+
+## Authorship analysis
+
+### Number of authors
+
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+authors <- articles %>% 
+  gather(author, name, 7:22) %>% 
+  select(author, name) %>% 
+  filter(name != "NA") %>% 
+  group_by(name) %>% 
+  tally(sort = T) 
+```
+
+There were `r nrow(authors)` unique authors in the collection of `r nrow(articles)` indexed articles. Let's see the list of authors and a frequency plot for authors who have published at least four articles.
+
+
+```{r}
+authors
+```
+
+
+```{r}
+authors %>% 
+  filter(n > 4) %>% 
+  ggplot(aes(reorder(name, n), n))+
+  geom_col(fill = "steelblue")+
+  coord_flip()+
+  scale_y_continuous(breaks=seq(0,30,3),  expand=c(0.01, 0))+
+ theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
+  labs(x = "", y = "Frequency", title ="Articles per author")
+```
+
+### Title words cloud
+
+```{r}
+library(tidytext)
+words <- articles %>% 
+  unnest_tokens(word, title)
+
+stopwords_pt <- read_csv(
+  file = "http://www.labape.com.br/rprimi/ds/stopwords.txt",
+  col_names = FALSE
+)
+names(stopwords_pt) <- "word"
+
+words2 <- words %>%
+  anti_join(stopwords_pt) %>%
+  anti_join(stop_words) # this is a list of English stopwords from the tidytext pkg
+
+
+words2 %>%
+    count(word) %>%
+  mutate(word = reorder(word, n))
+
+
+words_freq <- words2 %>%
+    count(word, sort = TRUE) %>%
+  mutate(word = reorder(word, n))
+
+
+```
+
+```{r}
+library(wordcloud)
+library(RColorBrewer)
+set.seed(2)
+png("figs/titulos.png", width=12, height=12, units="in", res=300)
+words_freq %>%
+  # filter(n > 5) %>%
+  with(wordcloud(word,
+    n,
+    scale = c(8, 0.4),
+    max.words = 1000,
+    min.freq = 1,
+    random.order = FALSE,
+    rot.per = 0.40, colors=brewer.pal(7, "Dark2")))
+dev.off()
+
+```
+
+
+
+
+### Authorship cloud
+
+A wordcloud is an interesting way to visualize the frequency of articles for each author in the group. 
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(wordcloud)
+set.seed(1)
+png("figs/FGSC-authors.png", width=8, height=8, units="in", res=300)
+wordcloud(authors$name, authors$n, c(5,.4), 1, random.order = F, colors=brewer.pal(8, "Dark2"))
+dev.off()
+
+```
+
+### Authors/article
+
+```{r}
+n_authors <- articles %>% 
+  select(1, 6:14) %>%
+  group_by(article_ID) %>% 
+  gather(name, n, 2:10) %>% 
+  na.omit() %>% 
+  select(article_ID) %>% 
+  group_by(article_ID) %>% 
+  tally(sort=T)
+summary(n_authors$n)
+```
+
+The number of authors varied from two to nine in the publications. 
+
+```{r}
+n_authors %>% 
+  ggplot(aes(n))+
+  geom_histogram()
+```
+
+
+
+### Country of origin of authors
+
+Countries per article
+
+```{r}
+n_countries <- articles %>% 
+  select(1, 31:36) %>%
+  group_by(article_ID) %>% 
+  gather(name, n, 2:7) %>% 
+  na.omit() %>% 
+  select(article_ID) %>% 
+  group_by(article_ID) %>% 
+  tally(sort=T)
+
+```
+
+The number of countries collaborating in an article varied from one to six, represented by one paper. Most of the articles involve authors from a same or from two countries.
+
+```{r}
+n_countries %>% 
+  ggplot(aes(n))+
+  geom_histogram()
+
+
+table(n_countries$n)
+```
+
+### Country names and frequency
+
+```{r include=FALSE}
+countries <- articles %>% 
+  gather(code, country, 31:36) %>% 
+  filter(country != "NA") %>%
+  select(country) %>% 
+  group_by(country) %>% 
+  tally(sort = T) 
+library(plyr)
+countries$country <- revalue(countries$country, c("United States" = "USA"))
+library(dplyr)
+
+countries
+countries <- countries %>% 
+  mutate(ID = country)
+```
+
+The countries reported in the affiliations of the authors were indexed for each article. We recorded the country name only once regardless of the number of authors from a same country in a same article. There were authors from `r nrow(countries)` countries, and the three most unique occurrences were `r countries[1,1]`, `r countries[2,1]` and `r countries[3,1]`. 
+
+```{r}
+library(sf)
+library(maps)
+library(ggthemes)
+
+world1 <- st_as_sf(map('world', plot = FALSE, fill = TRUE))
+
+world2 <- left_join(world1, countries) %>% 
+  filter(n  >0 )
+
+```
+
+
+
+```{r}
+
+
+#devtools::install_github("yutannihilation/ggsflabel")
+#library(ggsflabel)
+
+ggplot(world2) + 
+  geom_sf(data = world1, fill = NA, size = 0.2, color = "gray")+
+  geom_sf(data = world2, aes(fill = n), size = 0)+
+  labs(fill = "Number of 
+authors")+
+ #geom_sf_text_repel(aes(label = ID), size = 3, )+
+ #geom_sf_text_repel(aes(label = n), size = 3, )+
+  
+    theme_minimal()+
+  theme(legend.position = "top")+
+  scale_fill_viridis_c()
+ggsave("figs/map_authors.png", dpi = 300, width = 6)
+
+
+
+```
+
+
+
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+
+articles %>% 
+  
+  gather(code, country, 31:36) %>% 
+  filter(country != "NA") %>% 
+
+  ggplot(aes(reorder(country, country, function(x) length(x))))+
+  geom_bar()+
+  theme_minimal_hgrid()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(breaks=seq(0,50,2), expand=c(0.01, 0))+
+  labs(y = "Number of articles", x = "", title = "Country of the authors" )
+
+
+```
+
+
+## Scholarly collaborative network 
+
+Here we will analyze the authorship network to detect  connections among the authors and research communities. For such, we need to build an edge list, or all pairs of occurrences of two authors in a same publication. Let's see below the first 10 pairs or authors. The whole list has almost one thousand pairs.
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(purrr)
+library(purrrlyr)
+
+authors_net <- articles %>% select (7:20)
+author_list <- flatten(by_row(authors_net, ..f = function(x) flatten_chr(x), .labels = FALSE))
+author_list <- lapply(author_list, function(x) x[!is.na(x)])
+
+# create the edge list
+author_edge_list <- t(do.call(cbind, lapply(author_list[sapply(author_list, length) >= 2], combn, 2)))
+
+author_edge_list[1:10, ]
+
+```
+
+Within an authorship network, co-authors (present in a same article) are linked together. Authors from this articles can be connected to authors from other articles whenever they appear together. Therefore, two articles are linked by a common author. Each author is then considered a **node** in the network and the connections between them are the **edges** or links. There are several statistics to calculate in a network analysis. 
+
+For now, let's visualize the authorship network and also the community structure which was defined via a function that tries to find densely connected subgraphs, also called communities. We will use a random walk algorithm for determining the communities. The idea is that short random walks tend to stay in the same community. In the network below, there are 15 communities or subgraphs which are represented by the colors.
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# igraph
+library(igraph)
+net=graph.edgelist(as.matrix(author_edge_list), directed=FALSE)
+
+degree <- enframe(degree(net))
+
+
+degree %>% 
+  arrange(-value)
+
+#summary(degree$degree.net.)
+between <- data.frame(round(betweenness(net), 1))
+page <- data.frame(page_rank(net)$vector)
+close <-data.frame(round(closeness(net), 10))
+eigen <- data.frame(round(evcent(net)$vector, 5))
+```
+
+### Network graph
+
+```{r cache=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(network)
+library(intergraph)
+
+# Clusters
+wc <- cluster_walktrap(net)
+eb <- cluster_edge_betweenness(net)
+lec <- cluster_leading_eigen(net)
+cl <- cluster_label_prop(net)
+
+# Modularity
+mod <- modularity(wc)
+ms <- membership(wc)
+
+net_stat <- asNetwork(net)
+png("figs/network1.png", res = 600,  width = 5000 , height = 5000, units="px")
+set.seed(11)
+par(mar=c(0,0,0,0))
+plot.network(net_stat, vertex.cex= 0.05 + 0.25*log(graph.strength(net)), label =ifelse(degree(net)>37,V(net)$name,NA), label.bg = "white", label.col = "black", edge.col = "lightgray", edge.lty = 0.5, label.cex = 0.6,  displaylabels = TRUE, vertex.col = membership(wc), jitter = T, edge.len = 0.2, boxed.labels=T, label.border=1, pad=5)
+dev.off()
+```
+
+### Country collaborative network
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(purrr)
+library(purrrlyr)
+
+country_net <- articles %>% select (31:36)
+country_list <- flatten(by_row(country_net, ..f = function(x) flatten_chr(x), .labels = FALSE))
+country_list <- lapply(country_list, function(x) x[!is.na(x)])
+
+# create the edge list
+country_edge_list <- t(do.call(cbind, lapply(country_list[sapply(country_list, length) >= 2], combn, 2)))
+
+country_edge_list[1:10, ]
+
+```
+
+
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# igraph
+library(igraph)
+net2 <- graph.edgelist(as.matrix(country_edge_list), directed=FALSE)
+degree <- data.frame(degree(net2))
+#summary(degree$degree.net.)
+between <- data.frame(round(betweenness(net2), 1))
+page <- data.frame(page_rank(net2)$vector)
+close <-data.frame(round(closeness(net2), 10))
+eigen <- data.frame(round(evcent(net2)$vector, 5))
+```
+
+
+
+
+### Network graph
+
+```{r cache=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(network)
+library(intergraph)
+
+# Clusters
+wc2 <- cluster_walktrap(net2)
+eb2 <- cluster_edge_betweenness(net2)
+lec2 <- cluster_leading_eigen(net2)
+cl2 <- cluster_label_prop(net2)
+
+# Modularity
+mod <- modularity(wc2)
+ms <- membership(wc2)
+
+net_stat2 <- asNetwork(net2)
+png("figs/network2.png", res = 600,  width = 4500 , height = 4000, units="px")
+set.seed(1003)
+par(mar=c(0,0,0,0))
+plot.network(net_stat2, vertex.cex= 1 + 0.25*log(graph.strength(net2)), label =ifelse(degree(net2)>0, V(net2)$name,NA), label.bg = "NA", label.col = "black", edge.col = "gray", edge.lty = 1, label.cex = 0.7, edge.lwd = 2,   displaylabels = TRUE, vertex.col = membership(wc2), jitter = T, edge.len = 0.2, boxed.labels = T, label.border="NA", pad=1)
+dev.off()
+```
+
+
+
+### Statistics
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(broom)
+
+# Transitivity
+trans <- transitivity(net, type = "global")
+
+# Degree 
+deg <- degree(net)
+deg <- tidy(deg) 
+deg2 <- deg %>% group_by(names) %>% 
+  arrange(desc(x)) %>% head(20)
+
+# Betweenness
+bet <- betweenness(net, normalized = TRUE, directed = FALSE)
+bet <- tidy(bet) 
+bet2 <- bet %>% group_by(names) %>% 
+  arrange(desc(x)) %>%  head(20)
+
+
+# Eigenvector centrality
+eigen <- eigen_centrality(net)
+eigen1 <- tidy(eigen$vector) 
+eigen2 <- eigen1 %>% group_by(names) %>% 
+  arrange(desc(x)) %>%  head(20)
+
+
+# Page rank centrality
+rank <- page.rank(net)
+rank1 <- tidy(rank$vector) 
+rank2 <- rank1 %>% group_by(names) %>% 
+  arrange(desc(x)) %>%  head(20)
+
+# Closeness centrality
+close <- closeness(net)
+close1 <- tidy(close) 
+close2 <- close1 %>% group_by(names) %>% 
+  arrange(desc(x)) %>%  head(20)
+
+# Clusters
+wc <- cluster_walktrap(net)
+
+
+# Modularity
+mod <- modularity(wc)
+ms <- membership(wc)
+
+# clustering edge betweenness
+eb <- cluster_edge_betweenness(net)
+lec <- cluster_leading_eigen(net)
+
+```
+
+
+#### Network transitivity
+
+Transitivity, also know as clustering coefficient, is the mean probability that two author with a common author are themselves co-authors. In our study the transitivity was **`r trans`**, which means that, on average, the chance that two scholars that share a common collaborator wrote a paper together is almost one-half.
+
+#### Node degree
+
+Individually, authors can be highly connected or influential. The degree of a node is a basic structural property that quantify the number of adjacent nodes or edges. Let's see the 25 authors with most degree values.
+
+```{r}
+plot(deg2$x, eigen2$x)
+```
+
+#### Betweenness
+
+```{r}
+head(bet2, 10)
+```
+
+#### Page rank
+
+```{r}
+head(rank2)
+```
+
+#### Eigenvector
+
+```{r}
+head(eigen2)
+```
+
+#### Closeness
+
+```{r}
+head(close2)
+```
+
+
+## Survey details
+
+### Number of isolates per study
+
+
+```{r}
+articles %>% 
+  ggplot(aes(n_isolates))+
+  geom_histogram()
+
+sum(articles$n_isolates, na.rm = TRUE)
+summary(articles$n_isolates)
+```
+
+
+### Number of strains per source
+
+```{r}
+articles %>% 
+  dplyr::group_by(source) %>% 
+  summarize(n_strains = sum(n_isolates, na.rm = TRUE)) 
+
+```
+
+### Number of strains per country
+
+```{r eval=FALSE, include=FALSE}
+library(dplyr)
+articles %>% 
+  group_by(country_1) %>% 
+  summarize(n_strains = sum(n_isolates, na.rm = TRUE)) %>% 
+  arrange(-n_strains) %>% 
+  ggplot(aes(reorder(country_1, n_strains), n_strains))+
+  geom_col()+
+  theme_minimal_hgrid()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  #scale_y_continuous(breaks=seq(0,50,2), expand=c(0.01, 0))+
+  labs(y = "Number of strains", x = "", title = "FGSC strains per country" )
+
+  
+
+```
+
+
+```{r}
+# number of strains per species
+articles %>% 
+  select(38:53) %>% 
+  gather(species, value) %>% 
+  filter(value != "NA") %>% 
+  group_by(species) %>% 
+  summarize(n_strains = sum(value),
+    strains = round((sum(value)/sum(articles$n_isolates, na.rm = true))*100,2)) %>% 
+  arrange(-strains) 
+```
+
+
+```{r}
+
+# species by number of studies
+articles %>% 
+  select(38:53) %>% 
+  gather(species, value) %>% 
+  filter(value != "NA") %>% 
+  tabyl(species) %>% 
+  arrange(-n)
+
+# species by number of studies
+articles %>% 
+  select(80:90) %>% 
+  gather(fgra, value) %>% 
+  filter(value != "NA") %>% 
+  tabyl(fgra) %>% 
+  arrange(-n)
+
+# species by number of studies
+articles %>% 
+  select(80:90) %>% 
+  gather(fgra, value) %>% 
+  filter(value != "NA") %>% 
+  tabyl(fgra) %>% 
+  arrange(-n)
+
+
+# species by number of studies
+articles %>% 
+  select(92:97) %>% 
+  gather(fmer, value) %>% 
+  filter(value != "NA") %>% 
+  tabyl(fmer) %>% 
+  arrange(-n)
+
+
+articles %>% 
+  select(57:65) %>% 
+  gather(fasi, value) %>% 
+  filter(value != "NA") %>% 
+  tabyl(fasi) %>% 
+  arrange(-n)
+
+articles %>% 
+  select(115:128) %>% 
+  gather(host, value) %>% 
+  filter(value != "NA") %>% 
+  tabyl(value) %>% 
+  arrange(-n) %>% 
+  tibble()
+
+
+```
+
+
+
+
+```{r message=FALSE, warning=FALSE}
+fgsc <- readxl::read_excel("data/fgsc-dat-clean.xlsx")
+fgsc
+```
+
+
+
+
+## Strains by species
+
+```{r}
+species <- fgsc %>%
+  
+  select(FGSC, TRI_genotype) %>%
+  filter(TRI_genotype != "NA") %>% 
+  group_by(FGSC, TRI_genotype) %>%
+  tally(sort = T) %>% 
+  head(6) %>% 
+  ggplot(aes(reorder(FGSC, n), n, fill = TRI_genotype))+
+  geom_col()+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 8)+
+  theme(legend.position = "bottom")+
+  scale_fill_colorblind()+
+  labs(x = "", y = "Number of strains")
+```
+
+
+
+## Strains by host
+
+```{r}
+host <- fgsc %>%
+  select(Host) %>%
+  filter(Host != "unknown") %>% 
+  group_by(Host) %>%
+  tally(sort = T) %>% 
+  head(6) %>% 
+  ggplot(aes(reorder(Host, n), n))+
+  geom_col(fill = "steelblue")+
+  coord_flip()+
+  theme_minimal_vgrid(font_size = 8)+
+  theme(legend.position = "none")+
+  labs(x = "", y = "Number of strains")
+```
+
+
+
+## Strains by Tri genotype
+
+```{r}
+chemotype <- fgsc %>%
+  select(TRI_genotype) %>%
+  filter(TRI_genotype %in% c("15-ADON", "3-ADON", "NIV")) %>% 
+  group_by(TRI_genotype) %>%
+  tally(sort = T) %>% 
+  ggplot(aes(reorder(TRI_genotype, n), n))+
+  geom_col(fill = "steelblue")+
+ coord_flip()+
+  scale_fill_brewer(palette = "Set2")+
+  theme_minimal_hgrid()+
+  theme(legend.position = "none")+
+  
+  labs(x = "", y = "Number of strains")
+```
+
+
+## Strains by Country
+
+```{r}
+inset_map <- fgsc %>%
+  select(Country) %>%
+  group_by(Country) %>%
+  tally(sort = T) %>%
+  arrange(-n) %>% 
+  head(10) %>% 
+  ggplot(aes(reorder(Country, n), n/1000))+
+  geom_col(fill = "steelblue")+
+  theme_minimal_grid(font_size = 8)+
+  coord_flip()+
+  labs(x = "", y = "Thousand strains")
+  
+```
+
+## global maps
+
+```{r}
+
+global_map <- ggplot(fgsc) + 
+  geom_sf(data = world1, fill = NA, size = 0.2, color = "gray")+
+  geom_point(aes(Longitude, Latitude), size = 0.3, alpha = 0.4, 
+             shape = 16,
+             color = "steelblue")+
+    theme_map()+
+ 
+  theme(legend.position = "right")+
+  scale_fill_viridis_c()
+ggsave("figs/map_strains.png", dpi = 300, width = 8)
+
+```
+
+
+```{r}
+library(patchwork)
+global_map +
+     inset_element(inset_map, 
+                      left = 0, 
+                      bottom = 0.05, 
+                      right = 0.24, 
+                      top = 0.6)+
+ 
+ plot_annotation(tag_levels = "A")+
+  ggsave("figs/map_strains2.png", dpi = 300, width =9)
+
+```
+
+```{r}
+
+
+
+fgra1 <- ggplot(fgsc %>% filter(
+                         FGSC == "F. graminearum" |
+                         FGSC == "F. boothii" |
+                         FGSC == "F. austroamericanum"))+
+  geom_sf(data = world1, fill = NA, size = 0.2, color = "gray")+
+  geom_point(aes(Longitude, Latitude, color = FGSC), 
+             size = 0.2, alpha = 1, 
+             shape = 1)+
+    theme_minimal()+
+    scale_color_colorblind()+
+    labs(x = "", y ="")+
+  theme(legend.position = c(0.15, 0.3),
+        legend.key.size = unit(1,"line"),
+legend.background = element_rect(fill="gray98", 
+                                  size=1, color = "gray98",
+                                   linetype="solid"))+
+  guides(color = guide_legend(override.aes = list(size=3, alpha =1)))+
+  
+  ggsave("figs/map_Fgra1.png", dpi = 300, width = 9)
+
+library(ggthemes)
+
+fgra2 <- ggplot(fgsc %>% filter(FGSC == "F. asiaticum" | 
+                         FGSC =="F. meridionale" |
+                         FGSC == "F. cortaderiae" ))+
+  geom_sf(data = world1, fill = NA, size = 0.2, color = "gray")+
+  geom_point(aes(Longitude, Latitude, color = FGSC), size = 0.2, alpha = 1, 
+             shape = 1)+
+    theme_minimal()+
+    scale_color_few()+
+    labs(x = "", y ="")+
+  theme(legend.position = c(0.15, 0.3),
+        legend.key.size = unit(1,"line"),
+legend.background = element_rect(fill="gray98", 
+                                  size=1, color = "gray98",
+                                   linetype="solid"))+
+  guides(color = guide_legend(override.aes = list(size=3, alpha =1)))+
+  
+  ggsave("figs/map_Fgra2.png", dpi = 300, width = 9)
+
+
+(fgra1 / fgra2)+
+  ggsave("figs/map_Fgra.png", dpi = 300, width = 10)
+
+
+ggplot(fgsc %>% filter(TRI_genotype == "15-ADON" | 
+                         TRI_genotype =="3-ADON" |
+                         TRI_genotype == "NIV" ))+
+  geom_sf(data = world1, fill = NA, size = 0.2, color = "gray")+
+  geom_point(aes(Longitude, Latitude, color = TRI_genotype), size = 0.2, alpha = 1, 
+             shape = 1)+
+    theme_minimal()+
+      labs(x = "", y ="")+
+  scale_color_colorblind()+
+  theme(legend.position = c(0.15, 0.3),
+        legend.key.size = unit(1,"line"),
+legend.background = element_rect(fill="gray98", 
+                                  size=1, color = "gray98",
+                                   linetype="solid"))+
+  guides(color = guide_legend(override.aes = list(size=3, alpha =1)))+
+  
+  ggsave("figs/map_tri.png", dpi = 300, width = 9)
+```
+
+
+```{r}
+fgsc2 <- fgsc %>% 
+  filter(TRI_genotype == "15-ADON" |
+         TRI_genotype == "3-ADON" |
+         TRI_genotype == "NIV") %>% 
+  select(Host, TRI_genotype, FGSC2) %>% 
+  filter(FGSC2 == "Fgra" | 
+           FGSC2 == "Fmer" | 
+           FGSC2 == "Fasi" |
+           FGSC2 == "Fcor" | 
+           FGSC2 == "Fboo" |
+           FGSC2 == "Faus") %>% 
+  filter(Host == "Wheat" |
+           Host == "Rice" |
+           Host == "Barley"|
+           Host == "Maize" 
+  )
+```
+
+
+## PCA
+
+```{r}
+
+library(FactoMineR) 
+
+attach(fgsc2)
+data_mca = data.frame(Host, TRI_genotype, FGSC2)
+head(data_mca)
+cats<- apply(data_mca, 2, function(x) nlevels(as.factor(x))) #enumera as categorias
+cats
+mca1 <- MCA(data_mca, graph = TRUE)
+mca1
+res.mca = MCA(data_mca, graph=FALSE)
+plot(mca1)
+library("factoextra")
+eig.val <- get_eigenvalue(res.mca)
+head(eig.val)
+fviz_screeplot(res.mca, addlabels = TRUE)
+
+p <- fviz_mca_var(res.mca,  label = "var", repel = T,
+               col.var = "contrib",
+                # Avoid text overlapping (slow if many point)
+               ggtheme = theme_minimal())
+
+pca <- p + scale_color_viridis(end = 0.8)+
+  labs(title = "")+
+  xlim(-3, 3)+
+  ylim(-3,3)
+  ggsave("figs/pca.png", width =5, height = 5)
+
+
+```
+
+```{r}
+p <- pca | (host /species) 
+
+p+
+  plot_layout(widths = c(1, 0.5))+
+  theme_minimal_grid(font_size = 8)
+ggsave("figs/fig_combo.png", width = 8, height =4)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
